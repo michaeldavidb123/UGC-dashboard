@@ -34,12 +34,8 @@ const campaignSubMenu: NavGroupItem = {
   label: "Campaigns",
   icon: FolderKanban,
   children: [
-    { href: "/my-campaigns", icon: FileText,        label: "Active Briefs"       },
-    { href: "/tracker",      icon: CheckSquare,     label: "Task Tracker"        },
-    { href: "/analytics",    icon: BarChart3,       label: "Analytics"           },
-    { href: "/submissions",  icon: Upload,          label: "Deliverables"        },
-    { href: "/licenses",     icon: Key,             label: "Ad Licenses"         },
-    { href: "/ai-assistant", icon: Wand2,           label: "AI Script Helper"    },
+    { href: "/my-campaigns", icon: FileText,        label: "My Deals"  },
+    { href: "/analytics",    icon: BarChart3,       label: "Analytics" },
   ]
 };
 
