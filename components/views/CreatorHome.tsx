@@ -441,7 +441,7 @@ export default function CreatorHome() {
             </div>
 
             {/* Action Buttons: Payout Info / Request Payout */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 10 }}>
               <Link
                 href="/profile"
                 style={{
@@ -766,8 +766,8 @@ export default function CreatorHome() {
                   flexDirection: "column",
                   gap: 12
                 }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
                       <div style={{ width: 34, height: 34, borderRadius: 10, background: "var(--surface)", border: "1px solid var(--border-strong)", color: "var(--accent-text)", fontWeight: 800, fontSize: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
                         {b.brandInitial}
                       </div>
@@ -786,8 +786,8 @@ export default function CreatorHome() {
                   </div>
 
                   {/* Progress & Deadline Bar */}
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, paddingTop: 8, borderTop: "1px solid var(--border)" }}>
-                    <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, paddingTop: 8, borderTop: "1px solid var(--border)", flexWrap: "wrap" }}>
+                    <div style={{ flex: 1, minWidth: 160 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "var(--text-subtle)", marginBottom: 4, fontWeight: 500 }}>
                         <span>Deliverable Progress</span>
                         <span>{b.progress}%</span>

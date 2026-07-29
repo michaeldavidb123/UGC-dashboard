@@ -80,10 +80,10 @@ export default function AdminHome() {
             {activity.map((item, i) => (
               <div key={i} style={{
                 display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "16px 18px", borderRadius: 14,
+                padding: "14px 16px", borderRadius: 14,
                 background: "var(--surface-subtle)",
                 border: "1px solid var(--border)",
-                gap: 16,
+                gap: 12, flexWrap: "wrap",
                 transition: "all 0.15s"
               }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 14, flex: 1, minWidth: 0 }}>
