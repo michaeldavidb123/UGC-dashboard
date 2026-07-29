@@ -29,14 +29,24 @@ interface NavGroupItem {
 
 type NavEntry = NavSingleItem | NavGroupItem;
 
-/* ── 📁 Campaigns Sub-Menu ── */
-const campaignSubMenu: NavGroupItem = {
+/* ── 📁 Creator Campaigns Sub-Menu ── */
+const creatorCampaignSubMenu: NavGroupItem = {
   label: "Campaigns",
   icon: FolderKanban,
   children: [
-    { href: "/my-campaigns", icon: FileText,        label: "My Deals" },
-    { href: "/submissions",  icon: Upload,          label: "My Uploads / Vault" },
-    { href: "/analytics",    icon: BarChart3,       label: "Analytics" },
+    { href: "/creator/deals",   icon: FileText,        label: "My Deals" },
+    { href: "/creator/uploads", icon: Upload,          label: "My Uploads / Vault" },
+    { href: "/analytics",       icon: BarChart3,       label: "Analytics" },
+  ]
+};
+
+/* ── 📁 Brand Campaigns Sub-Menu ── */
+const brandCampaignSubMenu: NavGroupItem = {
+  label: "Campaigns",
+  icon: FolderKanban,
+  children: [
+    { href: "/brand/campaigns", icon: FileText,        label: "Active Campaigns" },
+    { href: "/analytics",       icon: BarChart3,       label: "Analytics" },
   ]
 };
 
@@ -56,7 +66,7 @@ const adminNav: NavEntry[] = [
   { href: "/",                    icon: LayoutDashboard, label: "Overview"            },
   { href: "/admin/users",         icon: Users,           label: "Users"               },
   { href: "/admin/campaigns",     icon: Megaphone,       label: "Campaigns"           },
-  campaignSubMenu,
+  creatorCampaignSubMenu,
   socialLoungeSubMenu,
   { href: "/ambassadors",         icon: HeartHandshake,  label: "Ambassadors"         },
   { href: "/admin/content",       icon: FileVideo,       label: "Content Review"      },
@@ -69,29 +79,29 @@ const adminNav: NavEntry[] = [
 ];
 
 const creatorNav: NavEntry[] = [
-  { href: "/",             icon: LayoutDashboard, label: "Overview"            },
-  { href: "/briefs",       icon: Megaphone,       label: "Browse Brands"       },
-  campaignSubMenu,
+  { href: "/",                 icon: LayoutDashboard, label: "Overview"            },
+  { href: "/briefs",           icon: Megaphone,       label: "Browse Brands"       },
+  creatorCampaignSubMenu,
   socialLoungeSubMenu,
-  { href: "/ambassadors",  icon: HeartHandshake,  label: "Ambassadors"         },
-  { href: "/subscription", icon: Crown,           label: "Subscription"        },
-  { href: "/earnings",     icon: Wallet,          label: "Earnings"            },
-  { href: "/transactions", icon: BadgeDollarSign, label: "Transactions"        },
-  { href: "/referrals",    icon: Gift,            label: "Referrals"           },
-  { href: "/profile",      icon: User,            label: "Profile & Showcase"  },
+  { href: "/ambassadors",      icon: HeartHandshake,  label: "Ambassadors"         },
+  { href: "/subscription",     icon: Crown,           label: "Subscription"        },
+  { href: "/creator/earnings", icon: Wallet,          label: "Earnings"            },
+  { href: "/transactions",     icon: BadgeDollarSign, label: "Transactions"        },
+  { href: "/referrals",        icon: Gift,            label: "Referrals"           },
+  { href: "/creator/portfolio",icon: User,            label: "Profile & Showcase"  },
 ];
 
 const normalNav: NavEntry[] = [
-  { href: "/",             icon: LayoutDashboard, label: "Overview"            },
-  { href: "/browse",       icon: Megaphone,       label: "Browse Talent"       },
-  campaignSubMenu,
+  { href: "/",                 icon: LayoutDashboard, label: "Overview"            },
+  { href: "/brand/talent",     icon: Megaphone,       label: "Browse Talent"       },
+  brandCampaignSubMenu,
   socialLoungeSubMenu,
-  { href: "/ambassadors",  icon: HeartHandshake,  label: "Ambassadors"         },
-  { href: "/subscription", icon: Crown,           label: "Plans"               },
-  { href: "/deposit",      icon: CreditCard,      label: "Fund Escrow"         },
-  { href: "/transactions", icon: BadgeDollarSign, label: "Transactions"        },
-  { href: "/referrals",    icon: Gift,            label: "Referrals"           },
-  { href: "/profile",      icon: User,            label: "Profile"             },
+  { href: "/ambassadors",      icon: HeartHandshake,  label: "Ambassadors"         },
+  { href: "/subscription",     icon: Crown,           label: "Plans"               },
+  { href: "/brand/escrow",     icon: CreditCard,      label: "Fund Escrow"         },
+  { href: "/transactions",     icon: BadgeDollarSign, label: "Transactions"        },
+  { href: "/referrals",        icon: Gift,            label: "Referrals"           },
+  { href: "/profile",          icon: User,            label: "Profile"             },
 ];
 
 export default function Sidebar() {
