@@ -145,7 +145,7 @@ export default function CreatorUploadsPage() {
             
             {/* Thumbnail Preview */}
             <div style={{ position: "relative", height: 180, background: "var(--surface-subtle)" }}>
-              <Image src={item.thumbnail} alt={item.title} fill style={{ objectFit: "cover" }} />
+              <Image src={item.thumbnail} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" style={{ objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.7) 100%)" }} />
               
               <div style={{ position: "absolute", top: 12, right: 12 }}>
