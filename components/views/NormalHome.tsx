@@ -53,7 +53,7 @@ export default function NormalHome() {
             <div style={{ color: "var(--text)", fontWeight: 700, fontSize: 16 }}>Active Campaigns</div>
             <div style={{ color: "var(--text-subtle)", fontSize: 13, marginTop: 4 }}>Overview of live UGC briefs and content delivery</div>
           </div>
-          <a href="/my-campaigns" style={{ color: "var(--accent-text)", fontSize: 13, fontWeight: 600, textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
+          <a href="/creator/deals" style={{ color: "var(--accent-text)", fontSize: 13, fontWeight: 600, textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
             View all <ChevronRight style={{ width: 14, height: 14 }} />
           </a>
         </div>

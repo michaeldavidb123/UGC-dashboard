@@ -85,7 +85,7 @@ const upcomingDeadlines = [
     due: "Due in 18 hours",
     urgent: true,
     actionText: "Fix Revision",
-    link: "/submissions"
+    link: "/creator/uploads"
   },
   {
     title: "Skincare Morning Routine Reel",
@@ -93,7 +93,7 @@ const upcomingDeadlines = [
     due: "Due in 2 days",
     urgent: false,
     actionText: "Upload Video",
-    link: "/submissions"
+    link: "/creator/uploads"
   },
   {
     title: "Noise-Canceling Headphones Unboxing",
@@ -101,7 +101,7 @@ const upcomingDeadlines = [
     due: "Due in 4 days",
     urgent: false,
     actionText: "View Brief",
-    link: "/my-campaigns"
+    link: "/creator/deals"
   },
 ];
 
@@ -140,7 +140,7 @@ const carouselSlides = [
     title: "High-Paying Tech & Beauty Campaigns",
     description: "New brands are actively hiring creators today with payouts up to $350 per video.",
     ctaText: "Browse Briefs",
-    ctaLink: "/briefs",
+    ctaLink: "/creator/briefs",
     image: "/slide-1.png",
   },
   {
@@ -150,7 +150,7 @@ const carouselSlides = [
     title: "$100 Creator Streak Challenge",
     description: "Complete 3 approved deliverables this week to unlock an instant $100 bonus payout.",
     ctaText: "View My Progress",
-    ctaLink: "/my-campaigns",
+    ctaLink: "/creator/deals",
     image: "/slide-2.png",
   },
   {
@@ -160,7 +160,7 @@ const carouselSlides = [
     title: "Top 5% Creator Status Unlocked",
     description: "Enjoy +5% bonus payouts on every accepted brief and 24-hour instant clearance.",
     ctaText: "View Tier Perks",
-    ctaLink: "/profile",
+    ctaLink: "/creator/profile",
     image: "/slide-3.png",
   },
 ];
@@ -332,7 +332,7 @@ export default function CreatorHome() {
 
         {/* Quick Action 2: Upload Submission */}
         <Link
-          href="/submissions"
+          href="/creator/uploads"
           style={{
             padding: "16px 20px",
             borderRadius: 16,
@@ -749,7 +749,7 @@ export default function CreatorHome() {
                 </p>
               </div>
 
-              <Link href="/my-campaigns" style={{ color: "var(--accent-text)", fontSize: 12, fontWeight: 700, textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
+              <Link href="/creator/deals" style={{ color: "var(--accent-text)", fontSize: 12, fontWeight: 700, textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
                 View All My Briefs <ChevronRight style={{ width: 14, height: 14 }} />
               </Link>
             </div>
@@ -803,7 +803,7 @@ export default function CreatorHome() {
                         {b.deadline}
                       </span>
 
-                      <Link href="/submissions" className="btn btn-primary" style={{ padding: "5px 12px", fontSize: 11, borderRadius: 8 }}>
+                      <Link href="/creator/uploads" className="btn btn-primary" style={{ padding: "5px 12px", fontSize: 11, borderRadius: 8 }}>
                         Upload Content
                       </Link>
                     </div>
@@ -825,7 +825,7 @@ export default function CreatorHome() {
                 </p>
               </div>
 
-              <Link href="/submissions" style={{ color: "var(--accent-text)", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>
+              <Link href="/creator/uploads" style={{ color: "var(--accent-text)", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>
                 View All
               </Link>
             </div>
