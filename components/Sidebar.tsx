@@ -539,34 +539,36 @@ export function Topbar({ title }: { title: string }) {
                 </div>
               </div>
 
-              {/* View Switcher */}
-              <div style={{ padding: "8px 10px", background: "var(--nav-hover-bg)", borderRadius: 12, margin: "0 2px 6px", border: "1px solid var(--border-strong)" }}>
-                <div style={{ color: "var(--text-subtle)", fontSize: 10, fontWeight: 600, marginBottom: 6, display: "flex", alignItems: "center", gap: 5 }}>
-                  <ShieldCheck style={{ width: 11, height: 11, color: "var(--accent-text)" }} />
-                  Switch Dashboard Mode
+              {/* View Switcher (Restricted to Admin Users Only) */}
+              {role === "admin" && (
+                <div style={{ padding: "8px 10px", background: "var(--nav-hover-bg)", borderRadius: 12, margin: "0 2px 6px", border: "1px solid var(--border-strong)" }}>
+                  <div style={{ color: "var(--text-subtle)", fontSize: 10, fontWeight: 600, marginBottom: 6, display: "flex", alignItems: "center", gap: 5 }}>
+                    <ShieldCheck style={{ width: 11, height: 11, color: "var(--accent-text)" }} />
+                    Admin Mode Switcher
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 4, background: "var(--input-bg)", padding: 3, borderRadius: 8 }}>
+                    {([
+                      { id: "admin", label: "Admin" },
+                      { id: "creator", label: "Creator" },
+                      { id: "normal", label: "Brand" },
+                    ] as const).map(m => (
+                      <button key={m.id} onClick={() => { setActiveView(m.id); setProfileOpen(false); }}
+                        style={{
+                          padding: "7px 2px", borderRadius: 6, fontSize: 10, fontWeight: 600,
+                          cursor: "pointer", border: "none", transition: "all 0.15s",
+                          display: "flex", alignItems: "center", justifyContent: "center", gap: 3,
+                          background: activeView === m.id ? "#0284c7" : "transparent",
+                          color: activeView === m.id ? "#fff" : "var(--text-subtle)",
+                          fontFamily: "var(--font-poppins), sans-serif",
+                        }}
+                      >
+                        {activeView === m.id && <Check style={{ width: 9, height: 9 }} />}
+                        {m.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 4, background: "var(--input-bg)", padding: 3, borderRadius: 8 }}>
-                  {([
-                    { id: "admin", label: "Admin" },
-                    { id: "creator", label: "Creator" },
-                    { id: "normal", label: "Brand" },
-                  ] as const).map(m => (
-                    <button key={m.id} onClick={() => { setActiveView(m.id); setProfileOpen(false); }}
-                      style={{
-                        padding: "7px 2px", borderRadius: 6, fontSize: 10, fontWeight: 600,
-                        cursor: "pointer", border: "none", transition: "all 0.15s",
-                        display: "flex", alignItems: "center", justifyContent: "center", gap: 3,
-                        background: activeView === m.id ? "#0284c7" : "transparent",
-                        color: activeView === m.id ? "#fff" : "var(--text-subtle)",
-                        fontFamily: "var(--font-poppins), sans-serif",
-                      }}
-                    >
-                      {activeView === m.id && <Check style={{ width: 9, height: 9 }} />}
-                      {m.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              )}
 
               {/* Menu Links */}
               {[
