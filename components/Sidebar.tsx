@@ -51,7 +51,7 @@ const normalNav = [
 export default function Sidebar() {
   const pathname = usePathname();
   const { effectiveView } = useRole();
-  const { collapsed, toggleSidebar, sidebarW, mobileOpen, setMobileOpen } = useUI();
+  const { collapsed, toggleSidebar, sidebarW, mobileOpen, setMobileOpen, isMobile } = useUI();
 
   const nav =
     effectiveView === "admin" ? adminNav :
@@ -69,16 +69,18 @@ export default function Sidebar() {
       top: 0,
       left: 0,
       height: "100vh",
-      width: sidebarW,
+      width: isMobile ? 270 : sidebarW,
+      transform: isMobile ? (mobileOpen ? "translateX(0)" : "translateX(-100%)") : "none",
       background: "var(--sidebar-bg)",
       borderRight: "1px solid var(--border-strong)",
       display: "flex",
       flexDirection: "column",
-      zIndex: 100,
+      zIndex: 1000,
       overflowY: "auto",
       overflowX: "hidden",
       transition: "width 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.25s cubic-bezier(0.4,0,0.2,1)",
       flexShrink: 0,
+      boxShadow: isMobile && mobileOpen ? "0 0 40px rgba(0,0,0,0.5)" : "none",
     }}>
 
       {/* ── Logo + Collapse Toggle ── */}
@@ -196,7 +198,7 @@ function NavItem({ href, icon, label, active, collapsed, setMobileOpen }: {
 ════════════════════════════════════════════ */
 export function Topbar({ title }: { title: string }) {
   const { role, activeView, setActiveView } = useRole();
-  const { theme, toggleTheme, toggleMobileOpen } = useUI();
+  const { theme, toggleTheme, toggleMobileOpen, isMobile } = useUI();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -220,7 +222,7 @@ export function Topbar({ title }: { title: string }) {
       position: "sticky",
       top: 0,
       zIndex: 40,
-      padding: "0 32px",
+      padding: isMobile ? "0 14px" : "0 32px",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
@@ -229,27 +231,34 @@ export function Topbar({ title }: { title: string }) {
     }}>
       {/* Title + Mobile Hamburger Button */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <button
-          onClick={toggleMobileOpen}
-          className="btn-icon btn mobile-menu-btn"
-          title="Open Navigation"
-        >
-          <Menu style={{ width: 18, height: 18 }} />
-        </button>
-        <h2 style={{ color: "var(--text)", fontWeight: 700, fontSize: 16, letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>{title}</h2>
-        <span className={`topbar-pill pill ${activeView === "admin" ? "pill-blue" : activeView === "creator" ? "pill-amber" : "pill-purple"}`}>
-          <span style={{ width: 6, height: 6, borderRadius: 999, background: "currentColor", display: "inline-block" }} />
-          {activeView === "admin" ? "Admin Mode" : activeView === "creator" ? "Creator Mode" : "Brand Mode"}
-        </span>
+        {isMobile && (
+          <button
+            onClick={toggleMobileOpen}
+            className="btn-icon btn mobile-menu-btn"
+            title="Open Navigation"
+            style={{ display: "inline-flex", flexShrink: 0 }}
+          >
+            <Menu style={{ width: 18, height: 18 }} />
+          </button>
+        )}
+        <h2 style={{ color: "var(--text)", fontWeight: 700, fontSize: isMobile ? 15 : 18, letterSpacing: "-0.02em", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{title}</h2>
+        {!isMobile && (
+          <span className="topbar-pill pill pill-blue">
+            <span style={{ width: 6, height: 6, borderRadius: 999, background: "currentColor", display: "inline-block" }} />
+            {activeView === "admin" ? "Admin Mode" : activeView === "creator" ? "Creator Mode" : "Brand Mode"}
+          </span>
+        )}
       </div>
 
       {/* Controls */}
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        {/* Search */}
-        <div className="topbar-search" style={{ position: "relative", display: "flex", alignItems: "center" }}>
-          <Search style={{ position: "absolute", left: 12, width: 14, height: 14, color: "var(--text-subtle)", pointerEvents: "none" }} />
-          <input placeholder="Search..." className="input" style={{ paddingLeft: 36, width: 180, paddingTop: 7, paddingBottom: 7, fontSize: 13 }} />
-        </div>
+        {/* Search (hidden on mobile) */}
+        {!isMobile && (
+          <div className="topbar-search" style={{ position: "relative", display: "flex", alignItems: "center" }}>
+            <Search style={{ position: "absolute", left: 12, width: 14, height: 14, color: "var(--text-subtle)", pointerEvents: "none" }} />
+            <input placeholder="Search..." className="input" style={{ paddingLeft: 36, width: 180, paddingTop: 7, paddingBottom: 7, fontSize: 13 }} />
+          </div>
+        )}
 
         {/* Theme toggle */}
         <button className="btn-icon btn" onClick={toggleTheme} title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}>

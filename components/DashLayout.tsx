@@ -10,11 +10,11 @@ interface DashProps {
 }
 
 export default function DashLayout({ title, children }: DashProps) {
-  const { sidebarW, mobileOpen, setMobileOpen } = useUI();
+  const { sidebarW, mobileOpen, setMobileOpen, isMobile } = useUI();
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", position: "relative" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", position: "relative", overflowX: "hidden" }}>
       {/* Mobile Drawer Overlay Backdrop */}
-      {mobileOpen && (
+      {isMobile && mobileOpen && (
         <div
           onClick={() => setMobileOpen(false)}
           style={{
@@ -25,13 +25,21 @@ export default function DashLayout({ title, children }: DashProps) {
         />
       )}
 
-      {/* Sidebar (handles desktop fixed vs mobile drawer internally) */}
+      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main area pushed right by sidebar on desktop (via CSS variable), 0 margin on mobile */}
+      {/* Main area: ZERO left margin on mobile/tablet, fixed sidebar margin on desktop */}
       <div
         className="dash-main-area"
-        style={{ "--sidebar-w": `${sidebarW}px` } as React.CSSProperties}
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          minWidth: 0,
+          width: isMobile ? "100%" : `calc(100% - ${sidebarW}px)`,
+          marginLeft: isMobile ? 0 : sidebarW,
+          transition: "margin-left 0.25s cubic-bezier(0.4,0,0.2,1), width 0.25s cubic-bezier(0.4,0,0.2,1)"
+        }}
       >
         <Topbar title={title} />
         <main className="dash-content-container" style={{ flex: 1 }}>

@@ -15,6 +15,7 @@ interface UIContextType {
   mobileOpen: boolean;
   setMobileOpen: (open: boolean) => void;
   toggleMobileOpen: () => void;
+  isMobile: boolean;
   sidebarW: number;
 }
 
@@ -26,6 +27,7 @@ const UIContext = createContext<UIContextType>({
   mobileOpen: false,
   setMobileOpen: () => {},
   toggleMobileOpen: () => {},
+  isMobile: false,
   sidebarW: SIDEBAR_FULL,
 });
 
@@ -37,6 +39,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Apply theme to <html> element
   useEffect(() => {
@@ -44,13 +47,16 @@ export function UIProvider({ children }: { children: ReactNode }) {
     root.setAttribute("data-theme", theme);
   }, [theme]);
 
-  // Close mobile sidebar on window resize if larger than 768px
+  // Track responsive screen width (< 1024px)
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+      if (!mobile) {
         setMobileOpen(false);
       }
     };
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -65,6 +71,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
       theme, toggleTheme,
       collapsed, toggleSidebar,
       mobileOpen, setMobileOpen, toggleMobileOpen,
+      isMobile,
       sidebarW
     }}>
       {children}
