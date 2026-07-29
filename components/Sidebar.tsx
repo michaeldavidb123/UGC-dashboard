@@ -34,10 +34,12 @@ const campaignSubMenu: NavGroupItem = {
   label: "Campaigns",
   icon: FolderKanban,
   children: [
-    { href: "/my-campaigns", icon: FileText,        label: "Active Briefs" },
-    { href: "/tracker",      icon: CheckSquare,     label: "Task Tracker"  },
-    { href: "/analytics",    icon: BarChart3,       label: "Analytics"     },
-    { href: "/submissions",  icon: Upload,          label: "Deliverables"  },
+    { href: "/my-campaigns", icon: FileText,        label: "Active Briefs"       },
+    { href: "/tracker",      icon: CheckSquare,     label: "Task Tracker"        },
+    { href: "/analytics",    icon: BarChart3,       label: "Analytics"           },
+    { href: "/submissions",  icon: Upload,          label: "Deliverables"        },
+    { href: "/licenses",     icon: Key,             label: "Ad Licenses"         },
+    { href: "/ai-assistant", icon: Wand2,           label: "AI Script Helper"    },
   ]
 };
 
@@ -60,8 +62,6 @@ const adminNav: NavEntry[] = [
   campaignSubMenu,
   socialLoungeSubMenu,
   { href: "/ambassadors",         icon: HeartHandshake,  label: "Ambassadors"         },
-  { href: "/ai-assistant",        icon: Wand2,           label: "AI Script Assistant" },
-  { href: "/licenses",            icon: Key,             label: "Ad Licensing"        },
   { href: "/admin/content",       icon: FileVideo,       label: "Content Review"      },
   { href: "/admin/payouts",       icon: DollarSign,      label: "Payouts"             },
   { href: "/admin/subscriptions", icon: CreditCard,      label: "Subscriptions"       },
@@ -77,14 +77,11 @@ const creatorNav: NavEntry[] = [
   campaignSubMenu,
   socialLoungeSubMenu,
   { href: "/ambassadors",  icon: HeartHandshake,  label: "Ambassadors"         },
-  { href: "/portfolio",    icon: UserCheck,       label: "Portfolio"           },
-  { href: "/ai-assistant", icon: Wand2,           label: "AI Script Assistant"  },
-  { href: "/licenses",     icon: Key,             label: "Ad Licensing"        },
   { href: "/subscription", icon: Crown,           label: "Subscription"        },
   { href: "/earnings",     icon: Wallet,          label: "Earnings"            },
   { href: "/deposits",     icon: BadgeDollarSign, label: "Deposits"            },
   { href: "/referrals",    icon: Gift,            label: "Referrals"           },
-  { href: "/profile",      icon: User,            label: "Profile"             },
+  { href: "/profile",      icon: User,            label: "Profile & Showcase"  },
 ];
 
 const normalNav: NavEntry[] = [
@@ -93,8 +90,6 @@ const normalNav: NavEntry[] = [
   campaignSubMenu,
   socialLoungeSubMenu,
   { href: "/ambassadors",  icon: HeartHandshake,  label: "Ambassadors"         },
-  { href: "/ai-assistant", icon: Wand2,           label: "AI Script Assistant"  },
-  { href: "/licenses",     icon: Key,             label: "Ad Licensing"        },
   { href: "/subscription", icon: Crown,           label: "Plans"               },
   { href: "/deposit",      icon: CreditCard,      label: "Make Deposit"        },
   { href: "/deposits",     icon: BadgeDollarSign, label: "Deposits"            },
@@ -278,7 +273,7 @@ function NavDropdown({ item, collapsed, setMobileOpen, pathname, fullPath }: {
         className={`nav-link${isAnyChildActive ? " active" : ""}`}
         style={{
           width: "100%", padding: "10px 12px",
-          justifyContent: collapsed ? "center" : "space-between",
+          justify: collapsed ? "center" : "space-between",
           background: isAnyChildActive ? "var(--nav-active-bg)" : open ? "var(--nav-hover-bg)" : "transparent",
           border: "none", cursor: "pointer", fontFamily: "inherit"
         }}
@@ -578,7 +573,8 @@ export function Topbar({ title }: { title: string }) {
 
               {/* Menu Links */}
               {[
-                { href: "/profile", icon: User, label: "My Profile" },
+                { href: "/profile", icon: User, label: "Profile & Showcase" },
+                { href: "/portfolio", icon: UserCheck, label: "View Public Portfolio" },
                 { href: "/admin/settings", icon: SlidersHorizontal, label: "Settings" },
               ].map(({ href, icon: Icon, label }) => (
                 <Link key={href} href={href} onClick={() => setProfileOpen(false)}
