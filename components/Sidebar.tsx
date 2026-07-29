@@ -7,7 +7,8 @@ import {
   LayoutDashboard, Users, Megaphone, FileVideo, DollarSign, Settings,
   Sparkles, ChevronDown, LogOut, Bell, Search, User, ShieldCheck, Check,
   FileText, Upload, SlidersHorizontal, HelpCircle, PanelLeftClose, PanelLeft,
-  Sun, Moon, CreditCard, BadgeDollarSign, LayoutList, Crown, Wallet, Gift, MessageSquare, Menu, CheckCircle2, Clock
+  Sun, Moon, CreditCard, BadgeDollarSign, LayoutList, Crown, Wallet, Gift, MessageSquare, Menu, CheckCircle2, Clock,
+  BarChart3, CheckSquare, X
 } from "lucide-react";
 import { useRole } from "@/context/RoleContext";
 import { useUI, SIDEBAR_FULL, SIDEBAR_MINI } from "@/context/UIContext";
@@ -16,6 +17,8 @@ const adminNav = [
   { href: "/",                    icon: LayoutDashboard, label: "Overview"        },
   { href: "/admin/users",         icon: Users,           label: "Users"           },
   { href: "/admin/campaigns",     icon: Megaphone,       label: "Campaigns"       },
+  { href: "/tracker",             icon: CheckSquare,     label: "Daily Tracker"   },
+  { href: "/analytics",           icon: BarChart3,       label: "Analytics"       },
   { href: "/admin/content",       icon: FileVideo,       label: "Content Review"  },
   { href: "/admin/community",     icon: MessageSquare,   label: "Community Posts" },
   { href: "/admin/payouts",       icon: DollarSign,      label: "Payouts"         },
@@ -30,6 +33,8 @@ const creatorNav = [
   { href: "/",             icon: LayoutDashboard, label: "Overview"        },
   { href: "/briefs",       icon: Megaphone,       label: "Browse Briefs"   },
   { href: "/my-campaigns", icon: FileText,        label: "My Briefs"       },
+  { href: "/tracker",      icon: CheckSquare,     label: "Daily Tracker"   },
+  { href: "/analytics",    icon: BarChart3,       label: "Analytics"       },
   { href: "/submissions",  icon: Upload,          label: "Uploads"         },
   { href: "/community",    icon: MessageSquare,   label: "Community Hub"   },
   { href: "/subscription", icon: Crown,           label: "My Subscription" },
@@ -43,6 +48,8 @@ const normalNav = [
   { href: "/",             icon: LayoutDashboard, label: "Overview"        },
   { href: "/browse",       icon: Megaphone,       label: "Browse Creators" },
   { href: "/my-campaigns", icon: FileText,        label: "My Campaigns"    },
+  { href: "/tracker",      icon: CheckSquare,     label: "Daily Tracker"   },
+  { href: "/analytics",    icon: BarChart3,       label: "Analytics"       },
   { href: "/community",    icon: MessageSquare,   label: "Community Hub"   },
   { href: "/subscription", icon: Crown,           label: "Plans & Pricing" },
   { href: "/deposit",      icon: CreditCard,      label: "Make Deposit"    },
@@ -85,7 +92,7 @@ export default function Sidebar() {
       "--sidebar-w": `${sidebarW}px`,
     } as React.CSSProperties}>
 
-      {/* ── Logo + Collapse Toggle ── */}
+      {/* ── Logo + Collapse Toggle (Desktop) / Close Button (Mobile) ── */}
       <div style={{
         height: 68,
         padding: "0 16px",
@@ -97,14 +104,14 @@ export default function Sidebar() {
         overflow: "hidden",
       }}>
         {/* Logo mark always visible */}
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", minWidth: 0, overflow: "hidden" }}>
+        <Link href="/" onClick={() => setMobileOpen(false)} style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", minWidth: 0, overflow: "hidden" }}>
           <div style={{ width: 36, height: 36, borderRadius: 10, background: "#0284c7", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 4px 12px rgba(2,132,199,0.35)" }}>
             <Sparkles style={{ width: 17, height: 17, color: "#fff" }} />
           </div>
           <div style={{
             overflow: "hidden",
-            opacity: collapsed ? 0 : 1,
-            width: collapsed ? 0 : "auto",
+            opacity: (!isMobile && collapsed) ? 0 : 1,
+            width: (!isMobile && collapsed) ? 0 : "auto",
             transition: "opacity 0.2s ease, width 0.25s ease",
             whiteSpace: "nowrap",
           }}>
@@ -115,30 +122,45 @@ export default function Sidebar() {
           </div>
         </Link>
 
-        {/* Collapse toggle */}
-        <button
-          onClick={toggleSidebar}
-          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          style={{
-            width: 30, height: 30, borderRadius: 8, flexShrink: 0,
-            background: "none", border: "1px solid var(--border-strong)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            color: "var(--text-subtle)", cursor: "pointer",
-            transition: "all 0.15s",
-          }}
-          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--nav-hover-bg)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text)"; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-subtle)"; }}
-        >
-          {collapsed
-            ? <PanelLeft style={{ width: 15, height: 15 }} />
-            : <PanelLeftClose style={{ width: 15, height: 15 }} />
-          }
-        </button>
+        {/* Desktop Collapse toggle OR Mobile Close Button */}
+        {isMobile ? (
+          <button
+            onClick={() => setMobileOpen(false)}
+            title="Close navigation"
+            style={{
+              width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+              background: "var(--nav-hover-bg)", border: "1px solid var(--border-strong)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: "var(--text)", cursor: "pointer",
+            }}
+          >
+            <X style={{ width: 16, height: 16 }} />
+          </button>
+        ) : (
+          <button
+            onClick={toggleSidebar}
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            style={{
+              width: 30, height: 30, borderRadius: 8, flexShrink: 0,
+              background: "none", border: "1px solid var(--border-strong)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: "var(--text-subtle)", cursor: "pointer",
+              transition: "all 0.15s",
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--nav-hover-bg)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-subtle)"; }}
+          >
+            {collapsed
+              ? <PanelLeft style={{ width: 15, height: 15 }} />
+              : <PanelLeftClose style={{ width: 15, height: 15 }} />
+            }
+          </button>
+        )}
       </div>
 
       {/* ── Nav Links ── */}
       <nav style={{ flex: 1, padding: "20px 10px", display: "flex", flexDirection: "column", gap: 2, overflowY: "auto", overflowX: "hidden" }}>
-        {!collapsed && (
+        {(!collapsed || isMobile) && (
           <div style={{ fontSize: 10, fontWeight: 700, color: "var(--text-subtle)", textTransform: "uppercase", letterSpacing: "0.08em", padding: "0 8px", marginBottom: 6 }}>
             {section}
           </div>
@@ -152,7 +174,7 @@ export default function Sidebar() {
               icon={<Icon style={{ width: 17, height: 17, flexShrink: 0, color: active ? "var(--accent-text)" : "var(--text-muted)" }} />}
               label={label}
               active={active}
-              collapsed={collapsed}
+              collapsed={!isMobile && collapsed}
               setMobileOpen={setMobileOpen}
             />
           );
@@ -160,7 +182,7 @@ export default function Sidebar() {
       </nav>
 
       {/* ── Footer Help Card ── */}
-      {!collapsed && (
+      {(!collapsed || isMobile) && (
         <div style={{ padding: "12px 10px 20px", flexShrink: 0 }}>
           <div style={{ padding: "14px 16px", borderRadius: 14, background: "var(--nav-hover-bg)", border: "1px solid var(--border-strong)", display: "flex", alignItems: "center", gap: 12 }}>
             <HelpCircle style={{ width: 16, height: 16, color: "var(--accent-text)", flexShrink: 0 }} />
