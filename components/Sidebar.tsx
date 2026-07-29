@@ -7,7 +7,7 @@ import {
   LayoutDashboard, Users, Megaphone, FileVideo, DollarSign, Settings,
   Sparkles, ChevronDown, LogOut, Bell, Search, User, ShieldCheck, Check,
   FileText, Upload, SlidersHorizontal, HelpCircle, PanelLeftClose, PanelLeft,
-  Sun, Moon, CreditCard, BadgeDollarSign, LayoutList, Crown, Wallet, Gift, MessageSquare, Menu
+  Sun, Moon, CreditCard, BadgeDollarSign, LayoutList, Crown, Wallet, Gift, MessageSquare, Menu, CheckCircle2, Clock
 } from "lucide-react";
 import { useRole } from "@/context/RoleContext";
 import { useUI, SIDEBAR_FULL, SIDEBAR_MINI } from "@/context/UIContext";
@@ -25,17 +25,20 @@ const adminNav = [
   { href: "/admin/plans",         icon: LayoutList,      label: "Plans"           },
   { href: "/admin/settings",      icon: Settings,        label: "Settings"        },
 ];
+
 const creatorNav = [
   { href: "/",             icon: LayoutDashboard, label: "Overview"        },
-  { href: "/briefs",       icon: FileText,        label: "Campaign Briefs" },
-  { href: "/submissions",  icon: Upload,          label: "Submissions"     },
-  { href: "/earnings",     icon: DollarSign,      label: "Earnings"        },
+  { href: "/briefs",       icon: Megaphone,       label: "Browse Briefs"   },
+  { href: "/my-campaigns", icon: FileText,        label: "My Briefs"       },
+  { href: "/submissions",  icon: Upload,          label: "Uploads"         },
   { href: "/community",    icon: MessageSquare,   label: "Community Hub"   },
-  { href: "/deposits",     icon: BadgeDollarSign, label: "My Deposits"     },
-  { href: "/subscription", icon: Crown,           label: "Membership"      },
+  { href: "/subscription", icon: Crown,           label: "My Subscription" },
+  { href: "/earnings",     icon: Wallet,          label: "Earnings & Fees" },
+  { href: "/deposits",     icon: BadgeDollarSign, label: "Deposit History" },
   { href: "/referrals",    icon: Gift,            label: "Refer & Earn"    },
   { href: "/profile",      icon: User,            label: "My Profile"      },
 ];
+
 const normalNav = [
   { href: "/",             icon: LayoutDashboard, label: "Overview"        },
   { href: "/browse",       icon: Megaphone,       label: "Browse Creators" },
@@ -119,7 +122,7 @@ export default function Sidebar() {
           style={{
             width: 30, height: 30, borderRadius: 8, flexShrink: 0,
             background: "none", border: "1px solid var(--border-strong)",
-            display: "none", alignItems: "center", justifyContent: "center",
+            display: "flex", alignItems: "center", justifyContent: "center",
             color: "var(--text-subtle)", cursor: "pointer",
             transition: "all 0.15s",
           }}
@@ -198,16 +201,35 @@ function NavItem({ href, icon, label, active, collapsed, setMobileOpen }: {
 export function Topbar({ title }: { title: string }) {
   const { role, activeView, setActiveView } = useRole();
   const { theme, toggleTheme, toggleMobileOpen, isMobile } = useUI();
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(3);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  /* Initial Mock Notifications */
+  const [notifications, setNotifications] = useState([
+    { id: 1, title: "Submission Approved", desc: "Nike Summer Skincare Reel approved (+$150.00 earned)", time: "5m ago", unread: true, color: "#10b981" },
+    { id: 2, title: "New Campaign Brief", desc: "TechFlow Labs posted a new $400 Tech Review brief", time: "1h ago", unread: true, color: "#0284c7" },
+    { id: 3, title: "Payout Dispatched", desc: "Withdrawal request of $450.00 sent to your bank account", time: "3h ago", unread: true, color: "#f59e0b" },
+    { id: 4, title: "Community Like", desc: "Sarah Mitchell liked your post '5 Lighting Hacks'", time: "5h ago", unread: false, color: "#8b5cf6" },
+  ]);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+        setNotifOpen(false);
+      }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  const markAllRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, unread: false })));
+    setUnreadCount(0);
+  };
 
   const name = activeView === "admin" ? "Alex Admin" : activeView === "creator" ? "Sarah Mitchell" : "GlowBrand Team";
   const email = activeView === "admin" ? "alex@ugcstudio.com" : activeView === "creator" ? "sarah@mitchell.com" : "brand@glowbrand.com";
@@ -215,22 +237,22 @@ export function Topbar({ title }: { title: string }) {
 
   return (
     <header className="topbar-header" style={{
-      height: 68,
+      height: 64,
       borderBottom: "1px solid var(--border-strong)",
       background: "var(--sidebar-bg)",
       position: "sticky",
       top: 0,
       zIndex: 40,
-      padding: isMobile ? "0 14px" : "0 32px",
+      padding: isMobile ? "0 14px" : "0 28px",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
       backdropFilter: "blur(12px)",
       transition: "background 0.25s ease",
     }}>
-      {/* Title + Mobile Hamburger Button */}
+      {/* Left side: Hamburger menu button + Logo mark (No titles crowding header) */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        {isMobile && (
+        {isMobile ? (
           <button
             onClick={toggleMobileOpen}
             className="btn-icon btn mobile-menu-btn"
@@ -239,19 +261,20 @@ export function Topbar({ title }: { title: string }) {
           >
             <Menu style={{ width: 18, height: 18 }} />
           </button>
-        )}
-        <h2 style={{ color: "var(--text)", fontWeight: 700, fontSize: isMobile ? 15 : 18, letterSpacing: "-0.02em", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{title}</h2>
-        {!isMobile && (
-          <span className="topbar-pill pill pill-blue">
-            <span style={{ width: 6, height: 6, borderRadius: 999, background: "currentColor", display: "inline-block" }} />
-            {activeView === "admin" ? "Admin Mode" : activeView === "creator" ? "Creator Mode" : "Brand Mode"}
-          </span>
+        ) : (
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: "#0284c7", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Sparkles style={{ width: 14, height: 14, color: "#fff" }} />
+            </div>
+            <span style={{ color: "var(--text)", fontWeight: 700, fontSize: 14, letterSpacing: "-0.01em" }}>UGC Studio</span>
+          </div>
         )}
       </div>
 
-      {/* Controls */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        {/* Search (hidden on mobile) */}
+      {/* Right side controls (Search, Theme, Notifications Dropdown, Profile Dropdown) */}
+      <div ref={containerRef} style={{ display: "flex", alignItems: "center", gap: 8, position: "relative" }}>
+        
+        {/* Search (hidden on mobile to keep topbar ultra clean) */}
         {!isMobile && (
           <div className="topbar-search" style={{ position: "relative", display: "flex", alignItems: "center" }}>
             <Search style={{ position: "absolute", left: 12, width: 14, height: 14, color: "var(--text-subtle)", pointerEvents: "none" }} />
@@ -267,75 +290,135 @@ export function Topbar({ title }: { title: string }) {
           }
         </button>
 
-        {/* Bell */}
-        <button className="btn-icon btn" title="Notifications" style={{ position: "relative" }}>
-          <Bell style={{ width: 15, height: 15 }} />
-          <span style={{ position: "absolute", top: 8, right: 8, width: 6, height: 6, borderRadius: 999, background: "#0284c7" }} />
-        </button>
-
-        {/* Profile Dropdown */}
-        <div ref={ref} style={{ position: "relative" }}>
+        {/* 🔔 Notification Icon + Dropdown */}
+        <div style={{ position: "relative" }}>
           <button
-            onClick={() => setOpen(!open)}
+            className="btn-icon btn"
+            onClick={() => { setNotifOpen(!notifOpen); setProfileOpen(false); }}
+            title="Notifications"
+            style={{ position: "relative" }}
+          >
+            <Bell style={{ width: 15, height: 15 }} />
+            {unreadCount > 0 && (
+              <span style={{ position: "absolute", top: 7, right: 7, width: 7, height: 7, borderRadius: 999, background: "#0284c7", boxShadow: "0 0 0 2px var(--sidebar-bg)" }} />
+            )}
+          </button>
+
+          {notifOpen && (
+            <div style={{
+              position: "absolute",
+              right: isMobile ? -50 : 0,
+              top: "calc(100% + 10px)",
+              width: isMobile ? "calc(100vw - 28px)" : 340,
+              maxWidth: 360,
+              borderRadius: 18,
+              background: "var(--surface)",
+              border: "1px solid var(--border-strong)",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+              padding: "16px", zIndex: 70,
+            }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, borderBottom: "1px solid var(--border)", paddingBottom: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Bell style={{ width: 15, height: 15, color: "#0284c7" }} />
+                  <span style={{ color: "var(--text)", fontWeight: 800, fontSize: 14 }}>Notifications</span>
+                  {unreadCount > 0 && (
+                    <span style={{ background: "rgba(2,132,199,0.15)", color: "#0284c7", fontSize: 10, fontWeight: 800, padding: "2px 7px", borderRadius: 999 }}>{unreadCount} New</span>
+                  )}
+                </div>
+                {unreadCount > 0 && (
+                  <button onClick={markAllRead} style={{ background: "none", border: "none", color: "var(--accent-text)", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
+                    Mark all read
+                  </button>
+                )}
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, maxHeight: 280, overflowY: "auto" }}>
+                {notifications.map(n => (
+                  <div key={n.id} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 12px", borderRadius: 12, background: n.unread ? "var(--surface-subtle)" : "transparent", border: `1px solid ${n.unread ? "var(--border-strong)" : "transparent"}` }}>
+                    <div style={{ width: 8, height: 8, borderRadius: 999, background: n.unread ? n.color : "transparent", marginTop: 5, flexShrink: 0 }} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ color: "var(--text)", fontWeight: 700, fontSize: 12 }}>{n.title}</div>
+                      <div style={{ color: "var(--text-subtle)", fontSize: 11, marginTop: 2, lineHeight: 1.4 }}>{n.desc}</div>
+                      <div style={{ color: "var(--text-subtle)", fontSize: 10, marginTop: 4, display: "flex", alignItems: "center", gap: 3 }}>
+                        <Clock style={{ width: 10, height: 10 }} /> {n.time}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* 👤 Profile Dropdown */}
+        <div style={{ position: "relative" }}>
+          <button
+            onClick={() => { setProfileOpen(!profileOpen); setNotifOpen(false); }}
             style={{
-              display: "flex", alignItems: "center", gap: 9,
-              padding: "6px 10px 6px 6px",
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "4px 8px 4px 4px",
               borderRadius: 12,
-              background: open ? "var(--nav-hover-bg)" : "transparent",
+              background: profileOpen ? "var(--nav-hover-bg)" : "transparent",
               border: "1px solid transparent",
               cursor: "pointer",
               transition: "all 0.15s",
               fontFamily: "var(--font-poppins), sans-serif",
             }}
             onMouseEnter={e => (e.currentTarget.style.background = "var(--nav-hover-bg)")}
-            onMouseLeave={e => { if (!open) e.currentTarget.style.background = "transparent"; }}
+            onMouseLeave={e => { if (!profileOpen) e.currentTarget.style.background = "transparent"; }}
           >
-            <div style={{ width: 32, height: 32, borderRadius: 10, background: "#0284c7", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 13 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 10, background: "#0284c7", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 13, flexShrink: 0 }}>
               {name[0]}
             </div>
-            <div style={{ textAlign: "left" }}>
-              <div style={{ color: "var(--text)", fontSize: 13, fontWeight: 600, lineHeight: 1.2 }}>{name}</div>
-              <div style={{ color: "var(--text-subtle)", fontSize: 11 }}>{badge}</div>
-            </div>
-            <ChevronDown style={{ width: 13, height: 13, color: "var(--text-subtle)", transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
+            {!isMobile && (
+              <div style={{ textAlign: "left" }}>
+                <div style={{ color: "var(--text)", fontSize: 12, fontWeight: 600, lineHeight: 1.2 }}>{name}</div>
+                <div style={{ color: "var(--text-subtle)", fontSize: 10 }}>{badge}</div>
+              </div>
+            )}
+            <ChevronDown style={{ width: 12, height: 12, color: "var(--text-subtle)", transform: profileOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
           </button>
 
-          {open && (
+          {profileOpen && (
             <div style={{
-              position: "absolute", right: 0, top: "calc(100% + 8px)",
-              width: 300, borderRadius: 18,
+              position: "absolute",
+              right: 0,
+              top: "calc(100% + 10px)",
+              width: isMobile ? "calc(100vw - 28px)" : 290,
+              maxWidth: 320,
+              borderRadius: 18,
               background: "var(--surface)",
               border: "1px solid var(--border-strong)",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.25)",
-              padding: 8, zIndex: 60,
+              boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+              padding: 8, zIndex: 70,
             }}>
               {/* User Header */}
-              <div style={{ padding: "14px 16px", borderBottom: "1px solid var(--border)", marginBottom: 6, display: "flex", alignItems: "center", gap: 12 }}>
-                <div style={{ width: 44, height: 44, borderRadius: 12, background: "#0284c7", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 17, flexShrink: 0 }}>
+              <div style={{ padding: "12px 14px", borderBottom: "1px solid var(--border)", marginBottom: 6, display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 12, background: "#0284c7", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 15, flexShrink: 0 }}>
                   {name[0]}
                 </div>
-                <div>
-                  <div style={{ color: "var(--text)", fontWeight: 700, fontSize: 14, lineHeight: 1.3 }}>{name}</div>
-                  <div style={{ color: "var(--text-subtle)", fontSize: 12 }}>{email}</div>
-                  <span className="pill pill-blue" style={{ marginTop: 6, display: "inline-flex" }}>{badge}</span>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ color: "var(--text)", fontWeight: 700, fontSize: 13, lineHeight: 1.3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{name}</div>
+                  <div style={{ color: "var(--text-subtle)", fontSize: 11, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{email}</div>
+                  <span className="pill pill-blue" style={{ marginTop: 4, display: "inline-flex", fontSize: 10 }}>{badge}</span>
                 </div>
               </div>
 
               {/* View Switcher */}
-              <div style={{ padding: "10px 12px", background: "var(--nav-hover-bg)", borderRadius: 12, margin: "0 4px 6px", border: "1px solid var(--border-strong)" }}>
-                <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 600, marginBottom: 8, display: "flex", alignItems: "center", gap: 6 }}>
-                  <ShieldCheck style={{ width: 12, height: 12, color: "var(--accent-text)" }} />
+              <div style={{ padding: "8px 10px", background: "var(--nav-hover-bg)", borderRadius: 12, margin: "0 2px 6px", border: "1px solid var(--border-strong)" }}>
+                <div style={{ color: "var(--text-subtle)", fontSize: 10, fontWeight: 600, marginBottom: 6, display: "flex", alignItems: "center", gap: 5 }}>
+                  <ShieldCheck style={{ width: 11, height: 11, color: "var(--accent-text)" }} />
                   Switch Dashboard Mode
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 4, background: "var(--input-bg)", padding: 4, borderRadius: 10 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 4, background: "var(--input-bg)", padding: 3, borderRadius: 8 }}>
                   {([
                     { id: "admin", label: "Admin" },
                     { id: "creator", label: "Creator" },
                     { id: "normal", label: "Brand" },
                   ] as const).map(m => (
-                    <button key={m.id} onClick={() => { setActiveView(m.id); setOpen(false); }}
+                    <button key={m.id} onClick={() => { setActiveView(m.id); setProfileOpen(false); }}
                       style={{
-                        padding: "8px 2px", borderRadius: 8, fontSize: 11, fontWeight: 600,
+                        padding: "7px 2px", borderRadius: 6, fontSize: 10, fontWeight: 600,
                         cursor: "pointer", border: "none", transition: "all 0.15s",
                         display: "flex", alignItems: "center", justifyContent: "center", gap: 3,
                         background: activeView === m.id ? "#0284c7" : "transparent",
@@ -343,7 +426,7 @@ export function Topbar({ title }: { title: string }) {
                         fontFamily: "var(--font-poppins), sans-serif",
                       }}
                     >
-                      {activeView === m.id && <Check style={{ width: 10, height: 10 }} />}
+                      {activeView === m.id && <Check style={{ width: 9, height: 9 }} />}
                       {m.label}
                     </button>
                   ))}
@@ -355,8 +438,8 @@ export function Topbar({ title }: { title: string }) {
                 { href: "/profile", icon: User, label: "My Profile" },
                 { href: "/admin/settings", icon: SlidersHorizontal, label: "Settings" },
               ].map(({ href, icon: Icon, label }) => (
-                <Link key={href} href={href} onClick={() => setOpen(false)}
-                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", borderRadius: 12, color: "var(--text-muted)", fontSize: 13, fontWeight: 500, textDecoration: "none", transition: "all 0.15s" }}
+                <Link key={href} href={href} onClick={() => setProfileOpen(false)}
+                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 14px", borderRadius: 10, color: "var(--text-muted)", fontSize: 12, fontWeight: 500, textDecoration: "none", transition: "all 0.15s" }}
                   onMouseEnter={e => { const el = e.currentTarget; el.style.background = "var(--nav-hover-bg)"; el.style.color = "var(--text)"; }}
                   onMouseLeave={e => { const el = e.currentTarget; el.style.background = "transparent"; el.style.color = "var(--text-muted)"; }}
                 >
@@ -365,8 +448,8 @@ export function Topbar({ title }: { title: string }) {
               ))}
 
               {/* Theme Toggle in dropdown */}
-              <button onClick={() => { toggleTheme(); setOpen(false); }}
-                style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", borderRadius: 12, color: "var(--text-muted)", fontSize: 13, fontWeight: 500, background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-poppins), sans-serif", transition: "all 0.15s" }}
+              <button onClick={() => { toggleTheme(); setProfileOpen(false); }}
+                style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "9px 14px", borderRadius: 10, color: "var(--text-muted)", fontSize: 12, fontWeight: 500, background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-poppins), sans-serif", transition: "all 0.15s" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--nav-hover-bg)"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text)"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)"; }}
               >
@@ -375,8 +458,8 @@ export function Topbar({ title }: { title: string }) {
               </button>
 
               <div style={{ borderTop: "1px solid var(--border)", marginTop: 4, paddingTop: 4 }}>
-                <button onClick={() => setOpen(false)}
-                  style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", borderRadius: 12, color: "#f87171", fontSize: 13, fontWeight: 600, background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-poppins), sans-serif", transition: "background 0.15s" }}
+                <button onClick={() => setProfileOpen(false)}
+                  style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "9px 14px", borderRadius: 10, color: "#f87171", fontSize: 12, fontWeight: 600, background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-poppins), sans-serif", transition: "background 0.15s" }}
                   onMouseEnter={e => (e.currentTarget.style.background = "rgba(244,63,94,0.08)")}
                   onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                 >
@@ -386,6 +469,7 @@ export function Topbar({ title }: { title: string }) {
             </div>
           )}
         </div>
+
       </div>
     </header>
   );
