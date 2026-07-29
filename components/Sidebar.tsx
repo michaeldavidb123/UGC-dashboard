@@ -34,9 +34,9 @@ const creatorCampaignSubMenu: NavGroupItem = {
   label: "Campaigns",
   icon: FolderKanban,
   children: [
-    { href: "/creator/deals",   icon: FileText,        label: "My Deals" },
-    { href: "/creator/uploads", icon: Upload,          label: "My Uploads / Vault" },
-    { href: "/analytics",       icon: BarChart3,       label: "Analytics" },
+    { href: "/creator/deals",     icon: FileText,        label: "My Deals" },
+    { href: "/creator/uploads",   icon: Upload,          label: "My Uploads / Vault" },
+    { href: "/creator/analytics", icon: BarChart3,       label: "Analytics" },
   ]
 };
 
@@ -45,20 +45,32 @@ const brandCampaignSubMenu: NavGroupItem = {
   label: "Campaigns",
   icon: FolderKanban,
   children: [
-    { href: "/brand/campaigns", icon: FileText,        label: "Active Campaigns" },
-    { href: "/analytics",       icon: BarChart3,       label: "Analytics" },
+    { href: "/brand/campaigns",   icon: FileText,        label: "Active Campaigns" },
+    { href: "/brand/analytics",   icon: BarChart3,       label: "Analytics" },
   ]
 };
 
-/* ── 🌐 Social Lounge Sub-Menu ── */
-const socialLoungeSubMenu: NavGroupItem = {
+/* ── 🌐 Creator Social Lounge Sub-Menu ── */
+const creatorSocialSubMenu: NavGroupItem = {
   label: "Social Lounge",
   icon: Globe,
   children: [
-    { href: "/community",                icon: MessageSquare,  label: "Social Feed" },
-    { href: "/community?tab=following",  icon: UserCheck,      label: "Following"   },
-    { href: "/community?tab=followers",  icon: UserPlus,       label: "Followers"   },
-    { href: "/community?tab=myposts",    icon: Sparkles,       label: "My Posts"    },
+    { href: "/creator/community",                icon: MessageSquare,  label: "Social Feed" },
+    { href: "/creator/community?tab=following",  icon: UserCheck,      label: "Following"   },
+    { href: "/creator/community?tab=followers",  icon: UserPlus,       label: "Followers"   },
+    { href: "/creator/community?tab=myposts",    icon: Sparkles,       label: "My Posts"    },
+  ]
+};
+
+/* ── 🌐 Brand Social Lounge Sub-Menu ── */
+const brandSocialSubMenu: NavGroupItem = {
+  label: "Social Lounge",
+  icon: Globe,
+  children: [
+    { href: "/brand/community",                icon: MessageSquare,  label: "Social Feed" },
+    { href: "/brand/community?tab=following",  icon: UserCheck,      label: "Following"   },
+    { href: "/brand/community?tab=followers",  icon: UserPlus,       label: "Followers"   },
+    { href: "/brand/community?tab=myposts",    icon: Sparkles,       label: "My Posts"    },
   ]
 };
 
@@ -67,7 +79,7 @@ const adminNav: NavEntry[] = [
   { href: "/admin/users",         icon: Users,           label: "Users"               },
   { href: "/admin/campaigns",     icon: Megaphone,       label: "Campaigns"           },
   creatorCampaignSubMenu,
-  socialLoungeSubMenu,
+  creatorSocialSubMenu,
   { href: "/ambassadors",         icon: HeartHandshake,  label: "Ambassadors"         },
   { href: "/admin/content",       icon: FileVideo,       label: "Content Review"      },
   { href: "/admin/payouts",       icon: DollarSign,      label: "Payouts"             },
@@ -80,28 +92,28 @@ const adminNav: NavEntry[] = [
 
 const creatorNav: NavEntry[] = [
   { href: "/",                 icon: LayoutDashboard, label: "Overview"            },
-  { href: "/briefs",           icon: Megaphone,       label: "Browse Brands"       },
+  { href: "/creator/briefs",   icon: Megaphone,       label: "Browse Brands"       },
   creatorCampaignSubMenu,
-  socialLoungeSubMenu,
-  { href: "/ambassadors",      icon: HeartHandshake,  label: "Ambassadors"         },
-  { href: "/subscription",     icon: Crown,           label: "Subscription"        },
-  { href: "/creator/earnings", icon: Wallet,          label: "Earnings"            },
-  { href: "/transactions",     icon: BadgeDollarSign, label: "Transactions"        },
-  { href: "/referrals",        icon: Gift,            label: "Referrals"           },
-  { href: "/creator/portfolio",icon: User,            label: "Profile & Showcase"  },
+  creatorSocialSubMenu,
+  { href: "/creator/ambassadors",  icon: HeartHandshake,  label: "Ambassadors"         },
+  { href: "/creator/subscription", icon: Crown,           label: "Subscription"        },
+  { href: "/creator/earnings",     icon: Wallet,          label: "Earnings"            },
+  { href: "/creator/transactions", icon: BadgeDollarSign, label: "Transactions"        },
+  { href: "/creator/referrals",    icon: Gift,            label: "Referrals"           },
+  { href: "/creator/profile",      icon: User,            label: "Profile & Showcase"  },
 ];
 
 const normalNav: NavEntry[] = [
-  { href: "/",                 icon: LayoutDashboard, label: "Overview"            },
-  { href: "/brand/talent",     icon: Megaphone,       label: "Browse Talent"       },
+  { href: "/",                   icon: LayoutDashboard, label: "Overview"            },
+  { href: "/brand/talent",       icon: Megaphone,       label: "Browse Talent"       },
   brandCampaignSubMenu,
-  socialLoungeSubMenu,
-  { href: "/ambassadors",      icon: HeartHandshake,  label: "Ambassadors"         },
-  { href: "/subscription",     icon: Crown,           label: "Plans"               },
-  { href: "/brand/escrow",     icon: CreditCard,      label: "Fund Escrow"         },
-  { href: "/transactions",     icon: BadgeDollarSign, label: "Transactions"        },
-  { href: "/referrals",        icon: Gift,            label: "Referrals"           },
-  { href: "/profile",          icon: User,            label: "Profile"             },
+  brandSocialSubMenu,
+  { href: "/brand/ambassadors",  icon: HeartHandshake,  label: "Ambassadors"         },
+  { href: "/brand/subscription", icon: Crown,           label: "Plans"               },
+  { href: "/brand/escrow",       icon: CreditCard,      label: "Fund Escrow"         },
+  { href: "/brand/transactions", icon: BadgeDollarSign, label: "Transactions"        },
+  { href: "/brand/referrals",    icon: Gift,            label: "Referrals"           },
+  { href: "/brand/profile",      icon: User,            label: "Profile"             },
 ];
 
 export default function Sidebar() {
