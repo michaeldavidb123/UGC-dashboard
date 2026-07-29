@@ -8,11 +8,11 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { href: "/", icon: LayoutDashboard, label: "Overview" },
-  { href: "/briefs", icon: FileText, label: "Briefs" },
-  { href: "/submissions", icon: Upload, label: "Submissions" },
-  { href: "/earnings", icon: DollarSign, label: "Earnings" },
-  { href: "/profile", icon: User, label: "Profile" },
+  { href: "/",                  icon: LayoutDashboard, label: "Overview"    },
+  { href: "/creator/briefs",    icon: FileText,        label: "Briefs"      },
+  { href: "/creator/uploads",   icon: Upload,          label: "Submissions" },
+  { href: "/creator/earnings",  icon: DollarSign,      label: "Earnings"    },
+  { href: "/creator/profile",   icon: User,            label: "Profile"     },
 ];
 
 export default function UserSidebar() {

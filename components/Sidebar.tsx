@@ -80,11 +80,11 @@ const adminNav: NavEntry[] = [
   { href: "/admin/campaigns",     icon: Megaphone,       label: "Campaigns"           },
   creatorCampaignSubMenu,
   creatorSocialSubMenu,
-  { href: "/ambassadors",         icon: HeartHandshake,  label: "Ambassadors"         },
+  { href: "/general/ambassadors",  icon: HeartHandshake,  label: "Ambassadors"         },
   { href: "/admin/content",       icon: FileVideo,       label: "Content Review"      },
   { href: "/admin/payouts",       icon: DollarSign,      label: "Payouts"             },
   { href: "/admin/subscriptions", icon: CreditCard,      label: "Subscriptions"       },
-  { href: "/transactions",        icon: BadgeDollarSign, label: "Transactions"        },
+  { href: "/general/transactions", icon: BadgeDollarSign, label: "Transactions"        },
   { href: "/admin/referrals",     icon: Gift,            label: "Referrals"           },
   { href: "/admin/plans",         icon: LayoutList,      label: "Plans"               },
   { href: "/admin/settings",      icon: Settings,        label: "Settings"            },
@@ -594,8 +594,8 @@ export function Topbar({ title }: { title: string }) {
 
               {/* Menu Links */}
               {[
-                { href: "/profile", icon: User, label: "Profile & Showcase" },
-                { href: "/portfolio", icon: UserCheck, label: "View Public Portfolio" },
+                { href: "/creator/profile",    icon: User,       label: "Profile & Showcase" },
+                { href: "/creator/portfolio",  icon: UserCheck,  label: "View Public Portfolio" },
                 { href: "/admin/settings", icon: SlidersHorizontal, label: "Settings" },
               ].map(({ href, icon: Icon, label }) => (
                 <Link key={href} href={href} onClick={() => setProfileOpen(false)}

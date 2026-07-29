@@ -250,7 +250,7 @@ export default function CreatorHome() {
             </div>
 
             <button
-              onClick={() => { dismissModal(); router.push("/subscription"); }}
+              onClick={() => { dismissModal(); router.push("/creator/subscription"); }}
               style={{ width: "100%", padding: "15px", borderRadius: 14, background: "#0284c7", border: "none", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.01em", boxShadow: "0 8px 24px rgba(2,132,199,0.35)", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 10 }}
             >
               View Plans & Subscribe <ArrowRight style={{ width: 16, height: 16 }} />
@@ -287,7 +287,7 @@ export default function CreatorHome() {
             </div>
           </div>
 
-          <Link href="/briefs" className="btn btn-primary" style={{ padding: "0 18px", height: 40, borderRadius: 12, textDecoration: "none", fontSize: 13, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 6 }}>
+          <Link href="/creator/briefs" className="btn btn-primary" style={{ padding: "0 18px", height: 40, borderRadius: 12, textDecoration: "none", fontSize: 13, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 6 }}>
             <Sparkles style={{ width: 14, height: 14 }} />
             Browse Briefs
           </Link>
@@ -298,7 +298,7 @@ export default function CreatorHome() {
       <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
         {/* Quick Action 1: View Campaigns */}
         <Link
-          href="/briefs"
+          href="/creator/briefs"
           style={{
             padding: "16px 20px",
             borderRadius: 16,
@@ -366,7 +366,7 @@ export default function CreatorHome() {
 
         {/* Quick Action 3: Edit Profile */}
         <Link
-          href="/profile"
+          href="/creator/profile"
           style={{
             padding: "16px 20px",
             borderRadius: 16,
@@ -443,7 +443,7 @@ export default function CreatorHome() {
             {/* Action Buttons: Payout Info / Request Payout */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 10 }}>
               <Link
-                href="/profile"
+                href="/creator/profile"
                 style={{
                   padding: "10px 14px", borderRadius: 12,
                   background: "var(--surface-subtle)", border: "1px solid var(--border-strong)",

@@ -18,7 +18,7 @@ export default function DashboardPage() {
     const done = localStorage.getItem("ugc_onboarding_complete") === "true";
     if (!done) {
       // Not onboarded yet — send them to the onboarding flow
-      router.replace("/onboarding");
+      router.replace("/general/onboarding");
       return;
     }
 
