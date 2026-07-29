@@ -29,9 +29,9 @@ interface NavGroupItem {
 
 type NavEntry = NavSingleItem | NavGroupItem;
 
-/* ── 📁 Campaign Workspace Sub-Menu ── */
+/* ── 📁 Campaigns Sub-Menu ── */
 const campaignSubMenu: NavGroupItem = {
-  label: "Campaign Workspace",
+  label: "Campaigns",
   icon: FolderKanban,
   children: [
     { href: "/my-campaigns", icon: FileText,        label: "Active Briefs" },
