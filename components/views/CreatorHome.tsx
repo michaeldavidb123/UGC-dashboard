@@ -264,7 +264,7 @@ export default function CreatorHome() {
 
 
       {/* ── 1. Top Greeting Header ── */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+      <div className="page-header-flex" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
         <div>
           <h1 style={{ color: "var(--text)", fontWeight: 800, fontSize: 26, letterSpacing: "-0.03em", margin: "0 0 4px" }}>
             Welcome back, Sarah
@@ -517,7 +517,7 @@ export default function CreatorHome() {
             overflow: "hidden"
           }}>
             {/* Carousel Content Layout: Left text + Right image */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 140px", gap: 16, alignItems: "center" }}>
+            <div className="carousel-responsive-grid" style={{ display: "grid", gridTemplateColumns: "1fr 140px", gap: 16, alignItems: "center" }}>
               <div>
                 <span style={{
                   display: "inline-flex",
@@ -559,7 +559,7 @@ export default function CreatorHome() {
               </div>
 
               {/* Slide Image */}
-              <div style={{
+              <div className="carousel-responsive-image" style={{
                 position: "relative",
                 width: 140,
                 height: 130,

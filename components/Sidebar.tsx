@@ -228,28 +228,27 @@ export function Topbar({ title }: { title: string }) {
       transition: "background 0.25s ease",
     }}>
       {/* Title + Mobile Hamburger Button */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <button
           onClick={toggleMobileOpen}
-          className="btn-icon btn"
+          className="btn-icon btn mobile-menu-btn"
           title="Open Navigation"
-          style={{ display: "inline-flex" }}
         >
           <Menu style={{ width: 18, height: 18 }} />
         </button>
-        <h2 style={{ color: "var(--text)", fontWeight: 700, fontSize: 18, letterSpacing: "-0.02em" }}>{title}</h2>
-        <span className={`pill ${activeView === "admin" ? "pill-blue" : activeView === "creator" ? "pill-amber" : "pill-purple"}`}>
+        <h2 style={{ color: "var(--text)", fontWeight: 700, fontSize: 16, letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>{title}</h2>
+        <span className={`topbar-pill pill ${activeView === "admin" ? "pill-blue" : activeView === "creator" ? "pill-amber" : "pill-purple"}`}>
           <span style={{ width: 6, height: 6, borderRadius: 999, background: "currentColor", display: "inline-block" }} />
           {activeView === "admin" ? "Admin Mode" : activeView === "creator" ? "Creator Mode" : "Brand Mode"}
         </span>
       </div>
 
       {/* Controls */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         {/* Search */}
-        <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+        <div className="topbar-search" style={{ position: "relative", display: "flex", alignItems: "center" }}>
           <Search style={{ position: "absolute", left: 12, width: 14, height: 14, color: "var(--text-subtle)", pointerEvents: "none" }} />
-          <input placeholder="Search..." className="input" style={{ paddingLeft: 36, width: 200, paddingTop: 8, paddingBottom: 8, fontSize: 13 }} />
+          <input placeholder="Search..." className="input" style={{ paddingLeft: 36, width: 180, paddingTop: 7, paddingBottom: 7, fontSize: 13 }} />
         </div>
 
         {/* Theme toggle */}
