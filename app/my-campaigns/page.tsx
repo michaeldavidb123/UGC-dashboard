@@ -94,10 +94,10 @@ export default function MyDealsPage() {
   });
 
   return (
-    <DashLayout title="My Deals & Uploads">
+    <DashLayout title="My Deals & Assigned Campaigns">
       <PageHeader
-        title="My Deals & Uploaded Content"
-        subtitle="Track active brand deals, view your submitted video deliverables, and check payout clearance."
+        title="My Deals & Assigned Campaigns"
+        subtitle="Contracted deals assigned to you by brands. Escrow funds are locked and released upon video deliverable clearance."
       />
 
       {/* ── CLEAN TAB FILTER BAR ── */}

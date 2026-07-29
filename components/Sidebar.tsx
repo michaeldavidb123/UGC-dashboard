@@ -34,7 +34,8 @@ const campaignSubMenu: NavGroupItem = {
   label: "Campaigns",
   icon: FolderKanban,
   children: [
-    { href: "/my-campaigns", icon: FileText,        label: "My Deals"  },
+    { href: "/my-campaigns", icon: FileText,        label: "My Deals" },
+    { href: "/submissions",  icon: Upload,          label: "My Uploads / Vault" },
     { href: "/analytics",    icon: BarChart3,       label: "Analytics" },
   ]
 };
