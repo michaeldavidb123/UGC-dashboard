@@ -8,7 +8,7 @@ import {
   Sparkles, ChevronDown, LogOut, Bell, Search, User, ShieldCheck, Check,
   FileText, Upload, SlidersHorizontal, HelpCircle, PanelLeftClose, PanelLeft,
   Sun, Moon, CreditCard, BadgeDollarSign, LayoutList, Crown, Wallet, Gift, MessageSquare, Menu, CheckCircle2, Clock,
-  BarChart3, CheckSquare, X, FolderKanban, Globe, UserCheck, UserPlus, HeartHandshake
+  BarChart3, CheckSquare, X, FolderKanban, Globe, UserCheck, UserPlus, HeartHandshake, Wand2, Key
 } from "lucide-react";
 import { useRole } from "@/context/RoleContext";
 import { useUI, SIDEBAR_FULL, SIDEBAR_MINI } from "@/context/UIContext";
