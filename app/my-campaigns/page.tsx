@@ -4,9 +4,9 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import DashLayout, { PageHeader } from "@/components/DashLayout";
 import {
-  FileText, Clock, Upload, CheckCircle2, AlertCircle, DollarSign,
-  Sparkles, Key, Wand2, PlayCircle, Eye, Download, X, Copy, Check,
-  ChevronRight, ArrowRight, ShieldCheck, Flame, Send
+  Sparkles, Wand2, Video, Mic, CheckCircle2, Upload, Play, Pause,
+  FileText, Clock, Key, ShieldCheck, DollarSign, Layers, Sliders,
+  Eye, Download, RefreshCcw, Copy, Check, X, ArrowRight, Zap, Scissors, Smartphone
 } from "lucide-react";
 
 interface DealItem {
@@ -16,320 +16,313 @@ interface DealItem {
   title: string;
   payout: string;
   deadline: string;
-  status: "active" | "in_review" | "revision_requested" | "completed";
+  status: "active" | "in_review" | "completed";
   niche: string;
   progress: number;
   image: string;
   sparkCode: string;
-  deliverables: string[];
-  tasks: { step: number; name: string; due: string; reward: string; done: boolean }[];
+  script: { hook: string; body: string; cta: string };
+  shotList: { step: number; title: string; desc: string; done: boolean }[];
 }
 
 const MOCK_DEALS: DealItem[] = [
   {
     id: "DEAL-101",
-    brand: "GlowBrand",
+    brand: "GlowBrand Skincare",
     brandLogo: "GB",
-    title: "Skincare Morning Routine Reel",
+    title: "Vitamin C Glow Serum Reel",
     payout: "$200.00",
     deadline: "Aug 10, 2025",
     status: "active",
     niche: "Beauty & Skincare",
-    progress: 50,
+    progress: 60,
     image: "/slide-1.png",
     sparkCode: "TT-SPARK-8924-GLOW",
-    deliverables: ["1x 30s Vertical Reel (9:16)", "3x High-Res Still Photos"],
-    tasks: [
-      { step: 1, name: "Script & Visual Hook Draft", due: "11:00 AM Today", reward: "+$50.00", done: true },
-      { step: 2, name: "Raw B-Roll & Texture Shoot", due: "4:00 PM Today", reward: "+$75.00", done: false },
-      { step: 3, name: "Final Edit Cut & Voiceover", due: "10:00 PM Today", reward: "+$75.00", done: false },
+    script: {
+      hook: "Stop scrolling if your skin feels dry and dull by 2 PM every single day!",
+      body: "I switched to GlowBrand's Vitamin C Serum. It's super lightweight, non-greasy, and gives instant glass skin glow.",
+      cta: "Use code GLOW20 for 20% off before it sells out!"
+    },
+    shotList: [
+      { step: 1, title: "3s Viral Hook Shot", desc: "Face close-up holding serum bottle in window daylight", done: true },
+      { step: 2, title: "Texture & Dropper Shot", desc: "3 drops onto cheekbones showing gel texture", done: true },
+      { step: 3, title: "Before vs After Skin", desc: "Side-by-side skin glow transition effect", done: false },
+      { step: 4, title: "Call to Action Overlay", desc: "Hold bottle smiling with GLOW20 code text box", done: false }
     ]
   },
   {
     id: "DEAL-102",
     brand: "TechFlow Labs",
     brandLogo: "TF",
-    title: "Noise-Canceling Headphones Review",
+    title: "ANC Headphones Unboxing",
     payout: "$300.00",
     deadline: "Aug 14, 2025",
     status: "in_review",
     niche: "Tech & Audio",
-    progress: 85,
+    progress: 90,
     image: "/slide-2.png",
     sparkCode: "IG-WHITELIST-4421-TF",
-    deliverables: ["1x 45s Product Review (9:16)", "2x Lifestyle Photos"],
-    tasks: [
-      { step: 1, name: "Script & Visual Storyboard", due: "Yesterday", reward: "+$75.00", done: true },
-      { step: 2, name: "ANC Noise Test Video Shoot", due: "Yesterday", reward: "+$125.00", done: true },
-      { step: 3, name: "Final Edit & Captions Upload", due: "Today at 9:00 AM", reward: "+$100.00", done: true },
-    ]
-  },
-  {
-    id: "DEAL-103",
-    brand: "NutriLife",
-    brandLogo: "NL",
-    title: "High-Protein Smoothie Recipe",
-    payout: "$150.00",
-    deadline: "Jul 24, 2025",
-    status: "completed",
-    niche: "Fitness & Nutrition",
-    progress: 100,
-    image: "/slide-3.png",
-    sparkCode: "PERPETUAL-BUYOUT-NL",
-    deliverables: ["1x 30s Recipe Reel", "5x Food Photography Stills"],
-    tasks: [
-      { step: 1, name: "Recipe Preparation & Shoot", due: "Completed", reward: "+$75.00", done: true },
-      { step: 2, name: "Final Video Cut Upload", due: "Completed", reward: "+$75.00", done: true },
+    script: {
+      hook: "These are the only headphones that completely muted a noisy flight...",
+      body: "Active noise cancellation test in coffee shop. The bass depth is insane.",
+      cta: "Tap link in bio to get $50 off today!"
+    },
+    shotList: [
+      { step: 1, title: "Unboxing Magnetic Box", desc: "Sleek unboxing reveal shot", done: true },
+      { step: 2, title: "ANC On/Off Test", desc: "Tap earcup button to show noise cancellation activation", done: true },
+      { step: 3, title: "CTA & Battery Specs", desc: "Highlight 40-hour battery life", done: true }
     ]
   }
 ];
 
 export default function MyDealsPage() {
-  const [deals, setDeals] = useState<DealItem[]>(MOCK_DEALS);
-  const [activeTab, setActiveTab] = useState("all");
-  const [selectedDeal, setSelectedDeal] = useState<DealItem | null>(null);
-  const [uploadModalOpen, setUploadModalOpen] = useState(false);
-  const [showAiHelper, setShowAiHelper] = useState(false);
-  const [aiProduct, setAiProduct] = useState("Vitamin C Glow Serum");
-  const [aiHooks, setAiHooks] = useState<string[]>([
-    "Stop scrolling if your skin feels dry and dull by 2 PM every day!",
-    "I tested 10 different Vitamin C serums so you don't have to...",
-    "The $30 skincare secret dermatologists don't want you to know."
-  ]);
-  const [copiedCode, setCopiedCode] = useState(false);
+  const [deals] = useState<DealItem[]>(MOCK_DEALS);
+  const [selectedDeal, setSelectedDeal] = useState<DealItem>(MOCK_DEALS[0]);
+  const [activeStudioTool, setActiveStudioTool] = useState<"teleprompter" | "storyboard" | "upload" | "licenses">("teleprompter");
+  const [prompterSpeed, setPrompterSpeed] = useState<number>(3);
+  const [prompterPlaying, setPrompterPlaying] = useState<boolean>(false);
+  const [copiedCode, setCopiedCode] = useState<boolean>(false);
 
-  const copySparkCode = (code: string) => {
+  const copyCode = (code: string) => {
     navigator.clipboard.writeText(code);
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2000);
   };
 
-  const markTaskDone = (dealId: string, taskStep: number) => {
-    setDeals(prev => prev.map(d => {
-      if (d.id !== dealId) return d;
-      const updatedTasks = d.tasks.map(t => t.step === taskStep ? { ...t, done: true } : t);
-      const doneCount = updatedTasks.filter(t => t.done).length;
-      const newProgress = Math.round((doneCount / updatedTasks.length) * 100);
-      return { ...d, tasks: updatedTasks, progress: newProgress };
-    }));
-  };
-
-  const filteredDeals = deals.filter(d => {
-    if (activeTab === "all") return true;
-    if (activeTab === "active") return d.status === "active";
-    if (activeTab === "in_review") return d.status === "in_review";
-    if (activeTab === "completed") return d.status === "completed";
-    return true;
-  });
-
   return (
-    <DashLayout title="My Deals Hub">
+    <DashLayout title="UGC Creator Studio Workstation">
       <PageHeader
-        title="My Deals & Campaign Workspace"
-        subtitle="Manage active deals, complete daily task checklists, generate AI video hooks, and upload video deliverables."
+        title="UGC Creator Studio Workstation"
+        subtitle="Your all-in-one studio environment: AI Teleprompter, Storyboard Shot List, Video Deliverable Player, and Ad Whitelisting."
+        action={
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <span className="pill pill-green" style={{ fontSize: 11, fontWeight: 800, padding: "5px 12px" }}>
+              <ShieldCheck style={{ width: 13, height: 13 }} /> Escrow Protected: {selectedDeal.payout}
+            </span>
+          </div>
+        }
       />
 
-      {/* ── TABS FOR DEALS ── */}
-      <div style={{ display: "flex", gap: 10, marginBottom: 24, overflowX: "auto" }}>
-        {[
-          { id: "all", label: "All My Deals" },
-          { id: "active", label: "Active Deals (1)" },
-          { id: "in_review", label: "In Review (1)" },
-          { id: "completed", label: "Completed (1)" },
-        ].map(t => (
-          <button
-            key={t.id}
-            onClick={() => setActiveTab(t.id)}
+      {/* ── TOP CAMPAIGN SELECTOR BAR ── */}
+      <div style={{ display: "flex", gap: 12, marginBottom: 24, overflowX: "auto" }}>
+        {deals.map(d => (
+          <div
+            key={d.id}
+            onClick={() => setSelectedDeal(d)}
             style={{
-              padding: "8px 18px", borderRadius: 999, fontSize: 13, fontWeight: 700,
-              cursor: "pointer", border: "none", transition: "all 0.15s", whiteSpace: "nowrap",
-              background: activeTab === t.id ? "#0284c7" : "var(--surface-subtle)",
-              color: activeTab === t.id ? "#fff" : "var(--text-subtle)",
+              padding: "12px 18px", borderRadius: 16, cursor: "pointer",
+              background: selectedDeal.id === d.id ? "rgba(2,132,199,0.12)" : "var(--surface)",
+              border: `2px solid ${selectedDeal.id === d.id ? "#0284c7" : "var(--border-strong)"}`,
+              display: "flex", alignItems: "center", gap: 12, minWidth: 260, transition: "all 0.15s"
             }}
           >
-            {t.label}
-          </button>
-        ))}
-      </div>
-
-      {/* ── DEALS GRID ── */}
-      <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 22 }}>
-        {filteredDeals.map(deal => (
-          <div key={deal.id} className="card card-lift" style={{ borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-            <div style={{ position: "relative", height: 160, background: "var(--surface-subtle)" }}>
-              <Image src={deal.image} alt={deal.title} fill style={{ objectFit: "cover" }} />
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.7) 100%)" }} />
-              <div style={{ position: "absolute", top: 12, right: 12 }}>
-                <span className={`pill ${deal.status === "active" ? "pill-green" : deal.status === "in_review" ? "pill-amber" : "pill-purple"}`} style={{ fontSize: 10 }}>
-                  {deal.status === "active" ? "Active" : deal.status === "in_review" ? "Waiting Review" : "Completed"}
-                </span>
-              </div>
-              <div style={{ position: "absolute", bottom: 12, left: 14, color: "#fff", fontWeight: 800, fontSize: 13 }}>
-                {deal.brand}
-              </div>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: "#0284c7", color: "#fff", fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              {d.brandLogo}
             </div>
-
-            <div style={{ padding: "20px", display: "flex", flexDirection: "column", flex: 1, justifyContent: "space-between", gap: 16 }}>
-              <div>
-                <h3 style={{ color: "var(--text)", fontWeight: 800, fontSize: 16, margin: "0 0 6px" }}>{deal.title}</h3>
-                <div style={{ color: "#10b981", fontWeight: 900, fontSize: 18 }}>{deal.payout} <span style={{ fontSize: 11, color: "var(--text-subtle)", fontWeight: 500 }}>in Escrow</span></div>
-              </div>
-
-              {/* Progress Bar */}
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, fontWeight: 700, color: "var(--text-subtle)", marginBottom: 4 }}>
-                  <span>Progress</span>
-                  <span>{deal.progress}%</span>
-                </div>
-                <div style={{ height: 6, background: "var(--surface-subtle)", borderRadius: 999, overflow: "hidden" }}>
-                  <div style={{ height: "100%", width: `${deal.progress}%`, background: "linear-gradient(90deg, #0284c7, #10b981)", borderRadius: 999 }} />
-                </div>
-              </div>
-
-              {/* Actions */}
-              <button
-                onClick={() => setSelectedDeal(deal)}
-                className="btn btn-primary"
-                style={{ width: "100%", borderRadius: 12, padding: "10px", fontSize: 13 }}
-              >
-                Open Workspace & Upload <ArrowRight style={{ width: 14, height: 14 }} />
-              </button>
+            <div>
+              <div style={{ color: "var(--text)", fontWeight: 800, fontSize: 13 }}>{d.title}</div>
+              <div style={{ color: "#10b981", fontWeight: 700, fontSize: 11 }}>{d.payout} Escrow</div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* ── ALL-IN-ONE DEAL WORKSPACE MODAL (Daily Tasks + Video Upload + AI Helper + Spark Code) ── */}
-      {selectedDeal && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 1000,
-          background: "rgba(0,0,0,0.75)", backdropFilter: "blur(8px)",
-          display: "flex", justifyContent: "flex-end"
-        }}>
-          <div style={{
-            width: "100%", maxWidth: 680, height: "100vh",
-            background: "var(--bg)", borderLeft: "1px solid var(--border-strong)",
-            display: "flex", flexDirection: "column", overflowY: "auto"
-          }}>
-            
-            {/* Header */}
-            <div style={{ padding: "20px 24px", background: "var(--surface)", borderBottom: "1px solid var(--border-strong)", display: "flex", alignItems: "center", justifyContent: "space-between", sticky: "top", top: 0, zIndex: 10 }}>
-              <div>
-                <span className="pill pill-blue" style={{ fontSize: 10 }}>{selectedDeal.brand} • {selectedDeal.niche}</span>
-                <h2 style={{ color: "var(--text)", fontWeight: 900, fontSize: 20, margin: "2px 0 0" }}>{selectedDeal.title}</h2>
-              </div>
-              <button onClick={() => setSelectedDeal(null)} style={{ background: "none", border: "none", color: "var(--text)", cursor: "pointer" }}>
-                <X style={{ width: 20, height: 20 }} />
-              </button>
-            </div>
+      {/* ── STUDIO WORKSTATION GRID ── */}
+      <div className="grid-responsive-2col" style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 24, alignItems: "start" }}>
 
-            {/* Body */}
-            <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: 24 }}>
+        {/* LEFT COLUMN: STUDIO TOOLS WORKSPACE */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
 
-              {/* 1. Escrow & Spark Code Banner */}
-              <div style={{ padding: "16px", borderRadius: 16, background: "rgba(2,132,199,0.08)", border: "1px solid rgba(2,132,199,0.25)", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-                <div>
-                  <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700 }}>ESCROW PAYOUT</div>
-                  <div style={{ color: "#10b981", fontWeight: 900, fontSize: 22 }}>{selectedDeal.payout}</div>
+          {/* TOOL NAV DOCK SWITCHER */}
+          <div style={{ display: "flex", background: "var(--surface-subtle)", border: "1px solid var(--border-strong)", borderRadius: 14, padding: 4, gap: 4 }}>
+            {[
+              { id: "teleprompter", label: "AI Teleprompter", icon: Wand2 },
+              { id: "storyboard", label: "Shot-List Storyboard", icon: Layers },
+              { id: "upload", label: "Video Upload & Player", icon: Video },
+              { id: "licenses", label: "Spark Ads Code", icon: Key },
+            ].map(tool => {
+              const Icon = tool.icon;
+              const isActive = activeStudioTool === tool.id;
+              return (
+                <button
+                  key={tool.id}
+                  onClick={() => setActiveStudioTool(tool.id as any)}
+                  style={{
+                    flex: 1, padding: "9px 12px", borderRadius: 10, fontSize: 12, fontWeight: 700,
+                    background: isActive ? "var(--surface)" : "transparent",
+                    color: isActive ? "#0284c7" : "var(--text-subtle)",
+                    border: `1px solid ${isActive ? "var(--border-strong)" : "transparent"}`,
+                    cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: 6
+                  }}
+                >
+                  <Icon style={{ width: 14, height: 14 }} />
+                  {tool.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* 1. TOOL PANELS: TELEPROMPTER */}
+          {activeStudioTool === "teleprompter" && (
+            <div className="card" style={{ padding: "24px", borderRadius: 22, background: "var(--surface)" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Wand2 style={{ width: 18, height: 18, color: "#f59e0b" }} />
+                  <h3 style={{ color: "var(--text)", fontWeight: 800, fontSize: 17, margin: 0 }}>AI Teleprompter Studio</h3>
                 </div>
-
-                <div>
-                  <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700 }}>SPARK ADS CODE</div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2 }}>
-                    <code style={{ background: "var(--surface)", padding: "4px 8px", borderRadius: 6, fontSize: 11, color: "#0284c7" }}>{selectedDeal.sparkCode}</code>
-                    <button onClick={() => copySparkCode(selectedDeal.sparkCode)} className="btn btn-ghost btn-sm">
-                      {copiedCode ? <Check style={{ width: 12, height: 12, color: "#10b981" }} /> : <Copy style={{ width: 12, height: 12 }} />}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* 2. AI SCRIPT ASSISTANT HELPER TOGGLE */}
-              <div className="card" style={{ padding: "18px", borderRadius: 16, background: "var(--surface)" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <Sparkles style={{ width: 18, height: 18, color: "#f59e0b" }} />
-                    <div>
-                      <div style={{ color: "var(--text)", fontWeight: 700, fontSize: 14 }}>Need Viral Script Ideas?</div>
-                      <div style={{ color: "var(--text-subtle)", fontSize: 11 }}>Generate 3-second TikTok hooks & visual shot lists</div>
-                    </div>
-                  </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <button
-                    onClick={() => setShowAiHelper(!showAiHelper)}
-                    className="btn btn-secondary btn-sm"
-                    style={{ borderRadius: 10, fontSize: 12 }}
+                    onClick={() => setPrompterPlaying(!prompterPlaying)}
+                    className="btn btn-primary btn-sm"
+                    style={{ borderRadius: 8, fontSize: 11 }}
                   >
-                    {showAiHelper ? "Hide AI Helper" : "Open AI Helper"}
+                    {prompterPlaying ? <Pause style={{ width: 12, height: 12 }} /> : <Play style={{ width: 12, height: 12 }} />}
+                    {prompterPlaying ? "Pause Scroll" : "Start Teleprompter"}
                   </button>
                 </div>
-
-                {showAiHelper && (
-                  <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 10 }}>
-                    <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700 }}>AI GENERATED VIRAL HOOKS:</div>
-                    {aiHooks.map((h, i) => (
-                      <div key={i} style={{ padding: "10px 12px", borderRadius: 10, background: "var(--surface-subtle)", border: "1px solid var(--border)", fontSize: 12, color: "var(--text)" }}>
-                        “{h}”
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
 
-              {/* 3. DAILY TASK CHECKLIST */}
-              <div>
-                <div style={{ color: "var(--text)", fontWeight: 800, fontSize: 16, marginBottom: 12 }}>Daily Task Checklist & Milestones</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {selectedDeal.tasks.map(task => (
-                    <div key={task.step} style={{ padding: "14px 16px", borderRadius: 14, background: task.done ? "rgba(16,185,129,0.05)" : "var(--surface-subtle)", border: `1px solid ${task.done ? "#10b981" : "var(--border)"}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{ width: 28, height: 28, borderRadius: 8, background: task.done ? "#10b981" : "var(--surface)", border: "1px solid var(--border)", color: task.done ? "#fff" : "var(--text)", fontWeight: 800, fontSize: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          {task.done ? <Check style={{ width: 14, height: 14 }} /> : task.step}
-                        </div>
-                        <div>
-                          <div style={{ color: "var(--text)", fontWeight: 700, fontSize: 13 }}>{task.name}</div>
-                          <div style={{ color: "var(--text-subtle)", fontSize: 11 }}>{task.due} · <strong style={{ color: "#10b981" }}>{task.reward}</strong></div>
-                        </div>
-                      </div>
+              {/* TELEPROMPTER SCREEN */}
+              <div style={{
+                height: 240, background: "#0f172a", borderRadius: 16, border: "2px solid #0284c7",
+                padding: "24px", overflowY: "auto", color: "#f8fafc", fontFamily: "sans-serif",
+                position: "relative", display: "flex", flexDirection: "column", gap: 16
+              }}>
+                <div style={{ borderLeft: "3px solid #f59e0b", paddingLeft: 12 }}>
+                  <div style={{ color: "#f59e0b", fontSize: 10, fontWeight: 800, textTransform: "uppercase" }}>[0:00 - 0:03] VIRAL HOOK</div>
+                  <div style={{ fontSize: 18, fontWeight: 800, marginTop: 4, lineHeight: 1.4 }}>“{selectedDeal.script.hook}”</div>
+                </div>
 
-                      {!task.done && (
-                        <button onClick={() => markTaskDone(selectedDeal.id, task.step)} className="btn btn-ghost btn-sm" style={{ fontSize: 11 }}>
-                          Mark Done
-                        </button>
-                      )}
+                <div style={{ borderLeft: "3px solid #38bdf8", paddingLeft: 12 }}>
+                  <div style={{ color: "#38bdf8", fontSize: 10, fontWeight: 800, textTransform: "uppercase" }}>[0:03 - 0:20] PRODUCT BODY</div>
+                  <div style={{ fontSize: 16, fontWeight: 600, marginTop: 4, lineHeight: 1.5, color: "#cbd5e1" }}>“{selectedDeal.script.body}”</div>
+                </div>
+
+                <div style={{ borderLeft: "3px solid #10b981", paddingLeft: 12 }}>
+                  <div style={{ color: "#10b981", fontSize: 10, fontWeight: 800, textTransform: "uppercase" }}>[0:20 - 0:30] CALL TO ACTION</div>
+                  <div style={{ fontSize: 17, fontWeight: 800, marginTop: 4, color: "#4ade80" }}>“{selectedDeal.script.cta}”</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 2. TOOL PANELS: STORYBOARD SHOT LIST */}
+          {activeStudioTool === "storyboard" && (
+            <div className="card" style={{ padding: "24px", borderRadius: 22 }}>
+              <div style={{ color: "var(--text)", fontWeight: 800, fontSize: 17, marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
+                <Layers style={{ width: 18, height: 18, color: "#0284c7" }} /> Video Storyboard & Shot Checklist
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {selectedDeal.shotList.map(shot => (
+                  <div key={shot.step} style={{ padding: "14px 16px", borderRadius: 14, background: shot.done ? "rgba(16,185,129,0.06)" : "var(--surface-subtle)", border: `1px solid ${shot.done ? "#10b981" : "var(--border)"}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <div style={{ width: 28, height: 28, borderRadius: 8, background: shot.done ? "#10b981" : "var(--surface)", color: shot.done ? "#fff" : "var(--text)", fontWeight: 800, fontSize: 12, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {shot.done ? <Check style={{ width: 14, height: 14 }} /> : shot.step}
+                      </div>
+                      <div>
+                        <div style={{ color: "var(--text)", fontWeight: 800, fontSize: 13 }}>{shot.title}</div>
+                        <div style={{ color: "var(--text-subtle)", fontSize: 11, marginTop: 2 }}>{shot.desc}</div>
+                      </div>
                     </div>
-                  ))}
-                </div>
+                    <span className={`pill ${shot.done ? "pill-green" : "pill-amber"}`} style={{ fontSize: 10 }}>
+                      {shot.done ? "Recorded" : "Pending Shot"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 3. TOOL PANELS: VIDEO UPLOAD & PLAYER */}
+          {activeStudioTool === "upload" && (
+            <div className="card" style={{ padding: "24px", borderRadius: 22 }}>
+              <div style={{ color: "var(--text)", fontWeight: 800, fontSize: 17, marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
+                <Upload style={{ width: 18, height: 18, color: "#0284c7" }} /> Studio Deliverable Upload Zone
               </div>
 
-              {/* 4. VIDEO DELIVERABLE UPLOAD ZONE */}
-              <div className="card" style={{ padding: "20px", borderRadius: 18 }}>
-                <div style={{ color: "var(--text)", fontWeight: 800, fontSize: 16, marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
-                  <Upload style={{ width: 16, height: 16, color: "#0284c7" }} /> Upload Content Deliverable
-                </div>
+              <div style={{ border: "2px dashed var(--border-strong)", borderRadius: 18, padding: "36px", textAlign: "center", background: "var(--surface-subtle)", cursor: "pointer", marginBottom: 16 }}>
+                <Video style={{ width: 32, height: 32, color: "#0284c7", margin: "0 auto 10px" }} />
+                <div style={{ color: "var(--text)", fontWeight: 800, fontSize: 14 }}>Drag and Drop MP4 / MOV Video File</div>
+                <div style={{ color: "var(--text-subtle)", fontSize: 12, marginTop: 4 }}>9:16 Vertical Ratio · Up to 4K 60fps · Max 500MB</div>
+              </div>
 
-                <div style={{ border: "2px dashed var(--border-strong)", borderRadius: 14, padding: "28px", textAlign: "center", background: "var(--surface-subtle)", cursor: "pointer", marginBottom: 14 }}>
-                  <Upload style={{ width: 28, height: 28, color: "var(--text-subtle)", margin: "0 auto 8px" }} />
-                  <div style={{ color: "var(--text)", fontWeight: 700, fontSize: 13 }}>Drop your MP4 / MOV video file here</div>
-                  <div style={{ color: "var(--text-subtle)", fontSize: 11, marginTop: 2 }}>Max 500MB · 9:16 Vertical Video Format</div>
-                </div>
+              <button onClick={() => alert("Deliverable uploaded successfully!")} className="btn btn-primary" style={{ width: "100%", borderRadius: 12, padding: "12px", fontSize: 13 }}>
+                Submit Video for Escrow Release
+              </button>
+            </div>
+          )}
 
-                <button
-                  onClick={() => {
-                    alert("Deliverable uploaded successfully! Sent to brand for clearance.");
-                    setSelectedDeal(null);
-                  }}
-                  className="btn btn-primary"
-                  style={{ width: "100%", borderRadius: 12, padding: "12px", fontSize: 13, fontWeight: 700 }}
-                >
-                  Submit Deliverable for Review
+          {/* 4. TOOL PANELS: SPARK ADS CODE */}
+          {activeStudioTool === "licenses" && (
+            <div className="card" style={{ padding: "24px", borderRadius: 22 }}>
+              <div style={{ color: "var(--text)", fontWeight: 800, fontSize: 17, marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
+                <Key style={{ width: 18, height: 18, color: "#0284c7" }} /> Spark Ads & Whitelisting Licenses
+              </div>
+
+              <div style={{ padding: "16px", borderRadius: 14, background: "var(--surface-subtle)", border: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+                <div>
+                  <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700 }}>TIKTOK SPARK CODE</div>
+                  <code style={{ fontSize: 14, fontWeight: 900, color: "#0284c7", marginTop: 2, display: "block" }}>{selectedDeal.sparkCode}</code>
+                </div>
+                <button onClick={() => copyCode(selectedDeal.sparkCode)} className="btn btn-secondary btn-sm" style={{ borderRadius: 8 }}>
+                  {copiedCode ? <Check style={{ width: 12, height: 12, color: "#10b981" }} /> : <Copy style={{ width: 12, height: 12 }} />}
+                  {copiedCode ? "Copied" : "Copy Code"}
                 </button>
               </div>
 
+              <div style={{ color: "var(--text-subtle)", fontSize: 12 }}>
+                Commercial usage license active for 90 days. Brand receives digital ad authorization for TikTok & Reels Spark Ads.
+              </div>
+            </div>
+          )}
+
+        </div>
+
+        {/* RIGHT COLUMN: LIVE VIDEO REEL PREVIEW & PRODUCTION METRICS */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          
+          {/* VERTICAL REEL PREVIEW CANVAS */}
+          <div className="card" style={{ padding: "20px", borderRadius: 22, textAlign: "center" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+              <span style={{ color: "var(--text)", fontWeight: 800, fontSize: 14, display: "flex", alignItems: "center", gap: 6 }}>
+                <Smartphone style={{ width: 15, height: 15, color: "#0284c7" }} /> 9:16 Reel Preview
+              </span>
+              <span className="pill pill-green" style={{ fontSize: 10 }}>4K 60FPS</span>
             </div>
 
+            <div style={{ position: "relative", height: 380, borderRadius: 18, overflow: "hidden", background: "#000" }}>
+              <Image src={selectedDeal.image} alt="Video Preview" fill style={{ objectFit: "cover", opacity: 0.85 }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.85) 100%)" }} />
+
+              {/* Play Button Overlay */}
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ width: 52, height: 52, borderRadius: 999, background: "rgba(2,132,199,0.9)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 8px 24px rgba(0,0,0,0.5)" }}>
+                  <Play style={{ width: 22, height: 22, fill: "#fff", marginLeft: 2 }} />
+                </div>
+              </div>
+
+              {/* Video Caption & Brand Tags */}
+              <div style={{ position: "absolute", bottom: 16, left: 16, right: 16, textAlign: "left", color: "#fff" }}>
+                <div style={{ fontSize: 12, fontWeight: 800 }}>@{selectedDeal.brand.toLowerCase().replace(/\s+/g, '')}</div>
+                <div style={{ fontSize: 11, opacity: 0.9, marginTop: 2 }}>“{selectedDeal.script.hook}”</div>
+              </div>
+            </div>
           </div>
+
+          {/* ESCROW CLEARANCE MILESTONE BOX */}
+          <div className="card" style={{ padding: "20px", borderRadius: 20, background: "var(--surface)" }}>
+            <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700 }}>ESCROW MILESTONE CLEARANCE</div>
+            <div style={{ color: "#10b981", fontWeight: 900, fontSize: 28, marginTop: 2 }}>{selectedDeal.payout}</div>
+            <p style={{ color: "var(--text-subtle)", fontSize: 12, marginTop: 4, lineHeight: 1.4 }}>
+              Funds held securely in escrow. Released directly into your bank upon video deliverable approval.
+            </p>
+          </div>
+
         </div>
-      )}
+
+      </div>
     </DashLayout>
   );
 }
