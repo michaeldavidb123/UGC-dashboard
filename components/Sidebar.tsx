@@ -2,13 +2,13 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   LayoutDashboard, Users, Megaphone, FileVideo, DollarSign, Settings,
   Sparkles, ChevronDown, LogOut, Bell, Search, User, ShieldCheck, Check,
   FileText, Upload, SlidersHorizontal, HelpCircle, PanelLeftClose, PanelLeft,
   Sun, Moon, CreditCard, BadgeDollarSign, LayoutList, Crown, Wallet, Gift, MessageSquare, Menu, CheckCircle2, Clock,
-  BarChart3, CheckSquare, X, FolderKanban
+  BarChart3, CheckSquare, X, FolderKanban, Globe, UserCheck, UserPlus, HeartHandshake
 } from "lucide-react";
 import { useRole } from "@/context/RoleContext";
 import { useUI, SIDEBAR_FULL, SIDEBAR_MINI } from "@/context/UIContext";
@@ -29,14 +29,27 @@ interface NavGroupItem {
 
 type NavEntry = NavSingleItem | NavGroupItem;
 
+/* ── 📁 Campaign Workspace Sub-Menu ── */
 const campaignSubMenu: NavGroupItem = {
   label: "Campaign Workspace",
   icon: FolderKanban,
   children: [
-    { href: "/my-campaigns", icon: FileText,        label: "My Briefs"     },
-    { href: "/tracker",      icon: CheckSquare,     label: "Daily Tracker" },
+    { href: "/my-campaigns", icon: FileText,        label: "Active Briefs" },
+    { href: "/tracker",      icon: CheckSquare,     label: "Task Tracker"  },
     { href: "/analytics",    icon: BarChart3,       label: "Analytics"     },
-    { href: "/submissions",  icon: Upload,          label: "Uploads"       },
+    { href: "/submissions",  icon: Upload,          label: "Deliverables"  },
+  ]
+};
+
+/* ── 🌐 Social Lounge Sub-Menu ── */
+const socialLoungeSubMenu: NavGroupItem = {
+  label: "Social Lounge",
+  icon: Globe,
+  children: [
+    { href: "/community",                icon: MessageSquare,  label: "Social Feed" },
+    { href: "/community?tab=following",  icon: UserCheck,      label: "Following"   },
+    { href: "/community?tab=followers",  icon: UserPlus,       label: "Followers"   },
+    { href: "/community?tab=myposts",    icon: Sparkles,       label: "My Posts"    },
   ]
 };
 
@@ -45,8 +58,8 @@ const adminNav: NavEntry[] = [
   { href: "/admin/users",         icon: Users,           label: "Users"           },
   { href: "/admin/campaigns",     icon: Megaphone,       label: "Campaigns"       },
   campaignSubMenu,
+  socialLoungeSubMenu,
   { href: "/admin/content",       icon: FileVideo,       label: "Content Review"  },
-  { href: "/admin/community",     icon: MessageSquare,   label: "Community Posts" },
   { href: "/admin/payouts",       icon: DollarSign,      label: "Payouts"         },
   { href: "/admin/subscriptions", icon: CreditCard,      label: "Subscriptions"   },
   { href: "/admin/deposits",      icon: BadgeDollarSign, label: "Deposits"        },
@@ -56,31 +69,34 @@ const adminNav: NavEntry[] = [
 ];
 
 const creatorNav: NavEntry[] = [
-  { href: "/",             icon: LayoutDashboard, label: "Overview"        },
-  { href: "/briefs",       icon: Megaphone,       label: "Browse Marketplace" },
+  { href: "/",             icon: LayoutDashboard, label: "Overview"           },
+  { href: "/briefs",       icon: Megaphone,       label: "Browse Brands"      },
   campaignSubMenu,
-  { href: "/community",    icon: MessageSquare,   label: "Community Hub"   },
-  { href: "/subscription", icon: Crown,           label: "My Subscription" },
-  { href: "/earnings",     icon: Wallet,          label: "Earnings & Fees" },
-  { href: "/deposits",     icon: BadgeDollarSign, label: "Deposit History" },
-  { href: "/referrals",    icon: Gift,            label: "Refer & Earn"    },
-  { href: "/profile",      icon: User,            label: "My Profile"      },
+  socialLoungeSubMenu,
+  { href: "/subscription", icon: Crown,           label: "Subscription"       },
+  { href: "/earnings",     icon: Wallet,          label: "Earnings"           },
+  { href: "/deposits",     icon: BadgeDollarSign, label: "Deposits"           },
+  { href: "/referrals",    icon: Gift,            label: "Referrals"          },
+  { href: "/profile",      icon: User,            label: "Profile"            },
 ];
 
 const normalNav: NavEntry[] = [
-  { href: "/",             icon: LayoutDashboard, label: "Overview"        },
-  { href: "/browse",       icon: Megaphone,       label: "Browse Marketplace" },
+  { href: "/",             icon: LayoutDashboard, label: "Overview"           },
+  { href: "/browse",       icon: Megaphone,       label: "Browse Talent"      },
   campaignSubMenu,
-  { href: "/community",    icon: MessageSquare,   label: "Community Hub"   },
-  { href: "/subscription", icon: Crown,           label: "Plans & Pricing" },
-  { href: "/deposit",      icon: CreditCard,      label: "Make Deposit"    },
-  { href: "/deposits",     icon: BadgeDollarSign, label: "Deposit History" },
-  { href: "/referrals",    icon: Gift,            label: "Refer Program"   },
-  { href: "/profile",      icon: User,            label: "Brand Profile"   },
+  socialLoungeSubMenu,
+  { href: "/subscription", icon: Crown,           label: "Plans"              },
+  { href: "/deposit",      icon: CreditCard,      label: "Make Deposit"       },
+  { href: "/deposits",     icon: BadgeDollarSign, label: "Deposits"           },
+  { href: "/referrals",    icon: Gift,            label: "Referrals"          },
+  { href: "/profile",      icon: User,            label: "Profile"            },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const fullPath = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : "");
+
   const { effectiveView } = useRole();
   const { collapsed, toggleSidebar, sidebarW, mobileOpen, setMobileOpen, isMobile } = useUI();
 
@@ -91,8 +107,8 @@ export default function Sidebar() {
 
   const section =
     effectiveView === "admin" ? "Platform" :
-    effectiveView === "creator" ? "Creator" :
-    "Workspace";
+    effectiveView === "creator" ? "Creator Hub" :
+    "Brand Hub";
 
   return (
     <aside className={`app-sidebar ${mobileOpen ? "mobile-open" : ""}`} style={{
@@ -195,6 +211,7 @@ export default function Sidebar() {
                 collapsed={!isMobile && collapsed}
                 setMobileOpen={setMobileOpen}
                 pathname={pathname}
+                fullPath={fullPath}
               />
             );
           }
@@ -231,15 +248,15 @@ export default function Sidebar() {
 }
 
 /* ── Collapsible Sub-Menu Dropdown Item ── */
-function NavDropdown({ item, collapsed, setMobileOpen, pathname }: {
-  item: NavGroupItem; collapsed: boolean; setMobileOpen?: (open: boolean) => void; pathname: string;
+function NavDropdown({ item, collapsed, setMobileOpen, pathname, fullPath }: {
+  item: NavGroupItem; collapsed: boolean; setMobileOpen?: (open: boolean) => void; pathname: string; fullPath: string;
 }) {
-  const isAnyChildActive = item.children.some(c => c.href === pathname);
+  const isAnyChildActive = item.children.some(c => c.href === pathname || c.href === fullPath);
   const [open, setOpen] = useState(isAnyChildActive);
 
   useEffect(() => {
     if (isAnyChildActive) setOpen(true);
-  }, [isAnyChildActive, pathname]);
+  }, [isAnyChildActive, fullPath, pathname]);
 
   const Icon = item.icon;
 
@@ -251,7 +268,7 @@ function NavDropdown({ item, collapsed, setMobileOpen, pathname }: {
         className={`nav-link${isAnyChildActive ? " active" : ""}`}
         style={{
           width: "100%", padding: "10px 12px",
-          justify: collapsed ? "center" : "space-between",
+          justifyContent: collapsed ? "center" : "space-between",
           background: isAnyChildActive ? "var(--nav-active-bg)" : open ? "var(--nav-hover-bg)" : "transparent",
           border: "none", cursor: "pointer", fontFamily: "inherit"
         }}
@@ -270,7 +287,7 @@ function NavDropdown({ item, collapsed, setMobileOpen, pathname }: {
       {open && !collapsed && (
         <div style={{ display: "flex", flexDirection: "column", gap: 2, paddingLeft: 18, borderLeft: "2px solid var(--border-strong)", marginLeft: 18, marginTop: 2, marginBottom: 4 }}>
           {item.children.map(sub => {
-            const active = pathname === sub.href;
+            const active = sub.href === fullPath || sub.href === pathname;
             const SubIcon = sub.icon;
             return (
               <Link

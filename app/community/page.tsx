@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import DashLayout, { PageHeader } from "@/components/DashLayout";
 import {
   Heart, MessageSquare, Repeat, Share2, Bookmark, Image as ImageIcon,
   Sparkles, TrendingUp, MoreHorizontal, CheckCircle2, UserCheck, Search,
-  Send, ShieldCheck, Tag, Plus, Flame, Award, Globe
+  Send, ShieldCheck, Tag, Plus, Flame, Award, Globe, UserPlus, Users, Trash2, Pin
 } from "lucide-react";
 
 interface Comment {
@@ -37,6 +38,7 @@ interface SocialPost {
   liked: boolean;
   reposted: boolean;
   bookmarked: boolean;
+  pinned?: boolean;
   comments: Comment[];
 }
 
@@ -60,6 +62,7 @@ const INITIAL_SOCIAL_POSTS: SocialPost[] = [
     liked: false,
     reposted: false,
     bookmarked: false,
+    pinned: true,
     comments: [
       { id: "C-1", author: "GlowBrand Team", avatar: "G", role: "Brand", content: "Great tips Sarah! Loved working with you on our last campaign.", time: "1h ago" },
       { id: "C-2", author: "Marcus Lee", avatar: "M", role: "Creator", content: "That 45-degree lighting tip changed my whole setup!", time: "45m ago" },
@@ -111,6 +114,18 @@ const INITIAL_SOCIAL_POSTS: SocialPost[] = [
   }
 ];
 
+const FOLLOWED_USERS = [
+  { id: "F-1", name: "TechFlow Labs", handle: "@techflow_hq", role: "Brand", verified: true, avatar: "T", color: "#8b5cf6", bio: "Leading consumer tech brand hiring UGC creators." },
+  { id: "F-2", name: "UGC Studio Official", handle: "@ugcstudio", role: "Admin", verified: true, avatar: "U", color: "#0284c7", bio: "Official platform updates and creator features." },
+  { id: "F-3", name: "Elena Rostova", handle: "@elena_ugc", role: "Creator", verified: true, avatar: "E", color: "#10b981", bio: "Beauty & Wellness video creator · 120+ approved reels." },
+];
+
+const FOLLOWER_USERS = [
+  { id: "FL-1", name: "GlowBrand Team", handle: "@glowbrand", role: "Brand", verified: true, avatar: "G", color: "#0284c7", bio: "Clean skincare brand seeking UGC video creators." },
+  { id: "FL-2", name: "Marcus Lee", handle: "@marcus_vids", role: "Creator", verified: false, avatar: "M", color: "#f59e0b", bio: "Tech & Lifestyle reviewer." },
+  { id: "FL-3", name: "AuraFit Wellness", handle: "@aurafit", role: "Brand", verified: true, avatar: "A", color: "#ec4899", bio: "Yoga & Mindfulness apparel." },
+];
+
 const TRENDING_HASHTAGS = [
   { tag: "#UGCtips", posts: "1.4k posts" },
   { tag: "#SkincareReels", posts: "890 posts" },
@@ -119,15 +134,26 @@ const TRENDING_HASHTAGS = [
   { tag: "#TikTokHooks", posts: "310 posts" },
 ];
 
-const TOP_CREATORS = [
-  { name: "Sarah Mitchell", handle: "@sarah_c", role: "Elite Creator", rating: "4.92 ★", color: "#0284c7" },
-  { name: "Jake Rodriguez", handle: "@jake_reviews", role: "Pro Creator", rating: "4.88 ★", color: "#10b981" },
-  { name: "Elena Rostova", handle: "@elena_ugc", role: "Pro Creator", rating: "4.95 ★", color: "#8b5cf6" },
-];
+export default function SocialLoungePage() {
+  return (
+    <Suspense fallback={<div>Loading Social Lounge...</div>}>
+      <SocialLoungeContent />
+    </Suspense>
+  );
+}
 
-export default function SocialCommunityPage() {
+function SocialLoungeContent() {
+  const searchParams = useSearchParams();
+  const tabQuery = searchParams ? searchParams.get("tab") : null;
+
   const [posts, setPosts] = useState<SocialPost[]>(INITIAL_SOCIAL_POSTS);
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState(tabQuery || "all");
+  const [followingList, setFollowingList] = useState(FOLLOWED_USERS);
+
+  useEffect(() => {
+    if (tabQuery) setActiveTab(tabQuery);
+  }, [tabQuery]);
+
   const [composerText, setComposerText] = useState("");
   const [composerCategory, setComposerCategory] = useState("Tips & Tricks");
   const [openCommentInput, setOpenCommentInput] = useState<Record<string, boolean>>({ "SP-1": true });
@@ -160,6 +186,10 @@ export default function SocialCommunityPage() {
       if (p.id !== id) return p;
       return { ...p, bookmarked: !p.bookmarked };
     }));
+  };
+
+  const deletePost = (id: string) => {
+    setPosts(prev => prev.filter(p => p.id !== id));
   };
 
   const handleAddComment = (postId: string) => {
@@ -217,6 +247,8 @@ export default function SocialCommunityPage() {
 
   const filteredPosts = posts.filter(p => {
     if (activeTab === "all") return true;
+    if (activeTab === "myposts") return p.author === "Sarah Mitchell";
+    if (activeTab === "following") return p.author !== "Sarah Mitchell";
     if (activeTab === "tips") return p.category === "Tips & Tricks";
     if (activeTab === "briefs") return p.category === "Collaboration";
     if (activeTab === "announcements") return p.category === "Announcement";
@@ -224,15 +256,15 @@ export default function SocialCommunityPage() {
   });
 
   return (
-    <DashLayout title="Community Feed">
+    <DashLayout title="Social Lounge">
       <PageHeader
-        title="Social Community Feed"
-        subtitle="Connect with creators & brands, share campaign insights, showcase reels, and engage in real-time."
+        title="Social Lounge"
+        subtitle="Connect with creators & brands, follow your network, share campaign insights, and engage in real-time."
       />
 
       <div className="grid-responsive-2col" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 24, alignItems: "start" }}>
 
-        {/* LEFT COLUMN: SOCIAL FEED & COMPOSER */}
+        {/* LEFT COLUMN: SOCIAL FEED & NETWORK VIEWS */}
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
 
           {/* 1. SOCIAL POST COMPOSER */}
@@ -287,13 +319,13 @@ export default function SocialCommunityPage() {
             </div>
           </div>
 
-          {/* 2. FEED TABS */}
+          {/* 2. NAVIGATION TABS */}
           <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4 }}>
             {[
-              { id: "all", label: "All Posts" },
-              { id: "tips", label: "Tips & Hacks" },
-              { id: "briefs", label: "Brand Briefs" },
-              { id: "announcements", label: "Announcements" },
+              { id: "all", label: "Social Feed" },
+              { id: "following", label: "Following (3)" },
+              { id: "followers", label: "Followers (3)" },
+              { id: "myposts", label: "My Posts" },
             ].map(t => (
               <button
                 key={t.id}
@@ -310,7 +342,60 @@ export default function SocialCommunityPage() {
             ))}
           </div>
 
-          {/* 3. SOCIAL POST CARDS */}
+          {/* 3. CONDITIONAL VIEWS: FOLLOWING & FOLLOWERS LISTS */}
+          {activeTab === "following" && (
+            <div className="card" style={{ padding: "20px", borderRadius: 20 }}>
+              <h3 style={{ color: "var(--text)", fontWeight: 800, fontSize: 16, marginBottom: 14 }}>Accounts You Follow</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {followingList.map(user => (
+                  <div key={user.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px", borderRadius: 14, background: "var(--surface-subtle)", border: "1px solid var(--border)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <div style={{ width: 38, height: 38, borderRadius: 12, background: user.color, color: "#fff", fontWeight: 800, fontSize: 15, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {user.avatar}
+                      </div>
+                      <div>
+                        <div style={{ color: "var(--text)", fontWeight: 700, fontSize: 13 }}>{user.name} <span style={{ color: "var(--text-subtle)", fontWeight: 400 }}>{user.handle}</span></div>
+                        <div style={{ color: "var(--text-subtle)", fontSize: 11, marginTop: 2 }}>{user.bio}</div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setFollowingList(prev => prev.filter(u => u.id !== user.id))}
+                      className="btn btn-secondary btn-sm"
+                      style={{ borderRadius: 10, fontSize: 11 }}
+                    >
+                      Unfollow
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "followers" && (
+            <div className="card" style={{ padding: "20px", borderRadius: 20 }}>
+              <h3 style={{ color: "var(--text)", fontWeight: 800, fontSize: 16, marginBottom: 14 }}>Accounts Following You</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {FOLLOWER_USERS.map(user => (
+                  <div key={user.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px", borderRadius: 14, background: "var(--surface-subtle)", border: "1px solid var(--border)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <div style={{ width: 38, height: 38, borderRadius: 12, background: user.color, color: "#fff", fontWeight: 800, fontSize: 15, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {user.avatar}
+                      </div>
+                      <div>
+                        <div style={{ color: "var(--text)", fontWeight: 700, fontSize: 13 }}>{user.name} <span style={{ color: "var(--text-subtle)", fontWeight: 400 }}>{user.handle}</span></div>
+                        <div style={{ color: "var(--text-subtle)", fontSize: 11, marginTop: 2 }}>{user.bio}</div>
+                      </div>
+                    </div>
+                    <button className="btn btn-primary btn-sm" style={{ borderRadius: 10, fontSize: 11 }}>
+                      Follow Back
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 4. SOCIAL POST CARDS */}
           {filteredPosts.map(post => {
             const commentsShown = openCommentInput[post.id];
             return (
@@ -330,13 +415,20 @@ export default function SocialCommunityPage() {
                       <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 2 }}>
                         <span className={`pill ${post.role === "Admin" ? "pill-blue" : post.role === "Brand" ? "pill-purple" : "pill-green"}`} style={{ fontSize: 10 }}>{post.role}</span>
                         <span style={{ color: "var(--text-subtle)", fontSize: 11 }}>• {post.time}</span>
+                        {post.pinned && <span style={{ color: "#0284c7", fontSize: 10, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 3 }}><Pin style={{ width: 10, height: 10 }} /> Pinned</span>}
                       </div>
                     </div>
                   </div>
 
-                  <button style={{ background: "none", border: "none", color: "var(--text-subtle)", cursor: "pointer", padding: 4 }}>
-                    <MoreHorizontal style={{ width: 18, height: 18 }} />
-                  </button>
+                  {post.author === "Sarah Mitchell" ? (
+                    <button onClick={() => deletePost(post.id)} title="Delete post" style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", padding: 4 }}>
+                      <Trash2 style={{ width: 16, height: 16 }} />
+                    </button>
+                  ) : (
+                    <button style={{ background: "none", border: "none", color: "var(--text-subtle)", cursor: "pointer", padding: 4 }}>
+                      <MoreHorizontal style={{ width: 18, height: 18 }} />
+                    </button>
+                  )}
                 </div>
 
                 {/* Content */}
@@ -478,7 +570,7 @@ export default function SocialCommunityPage() {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {TOP_CREATORS.map(c => (
+              {FOLLOWED_USERS.map(c => (
                 <div key={c.name} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <div style={{ width: 34, height: 34, borderRadius: 10, background: `${c.color}20`, border: `1px solid ${c.color}40`, color: c.color, fontWeight: 800, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center" }}>
