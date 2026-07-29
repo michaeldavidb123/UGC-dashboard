@@ -69,8 +69,7 @@ export default function Sidebar() {
       top: 0,
       left: 0,
       height: "100vh",
-      width: isMobile ? 270 : sidebarW,
-      transform: isMobile ? (mobileOpen ? "translateX(0)" : "translateX(-100%)") : "none",
+      width: "var(--sidebar-w, 260px)",
       background: "var(--sidebar-bg)",
       borderRight: "1px solid var(--border-strong)",
       display: "flex",
@@ -80,8 +79,8 @@ export default function Sidebar() {
       overflowX: "hidden",
       transition: "width 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.25s cubic-bezier(0.4,0,0.2,1)",
       flexShrink: 0,
-      boxShadow: isMobile && mobileOpen ? "0 0 40px rgba(0,0,0,0.5)" : "none",
-    }}>
+      "--sidebar-w": `${sidebarW}px`,
+    } as React.CSSProperties}>
 
       {/* ── Logo + Collapse Toggle ── */}
       <div style={{

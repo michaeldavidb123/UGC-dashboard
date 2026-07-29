@@ -10,13 +10,14 @@ interface DashProps {
 }
 
 export default function DashLayout({ title, children }: DashProps) {
-  const { sidebarW, mobileOpen, setMobileOpen, isMobile } = useUI();
+  const { sidebarW, mobileOpen, setMobileOpen } = useUI();
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", position: "relative", overflowX: "hidden" }}>
       {/* Mobile Drawer Overlay Backdrop */}
-      {isMobile && mobileOpen && (
+      {mobileOpen && (
         <div
           onClick={() => setMobileOpen(false)}
+          className="mobile-backdrop"
           style={{
             position: "fixed", inset: 0, zIndex: 900,
             background: "rgba(0,0,0,0.65)", backdropFilter: "blur(4px)",
@@ -28,18 +29,10 @@ export default function DashLayout({ title, children }: DashProps) {
       {/* Sidebar */}
       <Sidebar />
 
-      {/* Main area: ZERO left margin on mobile/tablet, fixed sidebar margin on desktop */}
+      {/* Main Area (Margin & Width 100% handled via globals.css media queries & --sidebar-w variable) */}
       <div
         className="dash-main-area"
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          minWidth: 0,
-          width: isMobile ? "100%" : `calc(100% - ${sidebarW}px)`,
-          marginLeft: isMobile ? 0 : sidebarW,
-          transition: "margin-left 0.25s cubic-bezier(0.4,0,0.2,1), width 0.25s cubic-bezier(0.4,0,0.2,1)"
-        }}
+        style={{ "--sidebar-w": `${sidebarW}px` } as React.CSSProperties}
       >
         <Topbar title={title} />
         <main className="dash-content-container" style={{ flex: 1 }}>

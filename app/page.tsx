@@ -2,16 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar, { Topbar } from "@/components/Sidebar";
+import DashLayout from "@/components/DashLayout";
 import { useRole } from "@/context/RoleContext";
-import { useUI } from "@/context/UIContext";
 import AdminHome from "@/components/views/AdminHome";
 import CreatorHome from "@/components/views/CreatorHome";
 import NormalHome from "@/components/views/NormalHome";
 
 export default function DashboardPage() {
   const { activeView, setActiveView } = useRole();
-  const { sidebarW } = useUI();
   const router = useRouter();
   const [ready, setReady] = useState(false);
 
@@ -47,14 +45,8 @@ export default function DashboardPage() {
     "Brand Workspace";
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)" }}>
-      <Sidebar />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0, marginLeft: sidebarW, transition: "margin-left 0.25s cubic-bezier(0.4,0,0.2,1)" }}>
-        <Topbar title={title} />
-        <main style={{ flex: 1, padding: "40px 48px" }}>
-          {view}
-        </main>
-      </div>
-    </div>
+    <DashLayout title={title}>
+      {view}
+    </DashLayout>
   );
 }
