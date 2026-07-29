@@ -76,13 +76,16 @@ export default function BrandProfileView() {
       />
 
       {/* ── BRAND HERO CARD ── */}
-      <div className="card" style={{ padding: "28px", borderRadius: 24, marginBottom: 24, position: "relative", overflow: "hidden" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+      <div className="card" style={{ padding: "clamp(18px, 4vw, 28px)", borderRadius: 24, marginBottom: 24, position: "relative", overflow: "hidden" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+          {/* Main Top Header: Logo + Info + Stats */}
+          <div className="brand-hero-content" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: 24 }}>
+            
+            {/* Brand Logo & Info */}
+            <div className="brand-hero-main" style={{ display: "flex", alignItems: "flex-start", gap: 16, flex: 1, minWidth: 260 }}>
               {/* Brand Logo Avatar */}
-              <div style={{ position: "relative" }}>
-                <div style={{ width: 76, height: 76, borderRadius: 20, background: "linear-gradient(135deg, #7c3aed, #a78bfa)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 900, fontSize: 28, boxShadow: "0 10px 24px rgba(124,58,237,0.3)" }}>
+              <div style={{ position: "relative", flexShrink: 0 }}>
+                <div style={{ width: "clamp(64px, 12vw, 76px)", height: "clamp(64px, 12vw, 76px)", borderRadius: 20, background: "linear-gradient(135deg, #7c3aed, #a78bfa)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 900, fontSize: "clamp(22px, 4vw, 28px)", boxShadow: "0 10px 24px rgba(124,58,237,0.3)" }}>
                   GB
                 </div>
                 {editing && (
@@ -92,48 +95,52 @@ export default function BrandProfileView() {
                 )}
               </div>
 
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {/* Title & Badge */}
+                <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 4 }}>
                   {editing ? (
                     <input className="input" value={brandName} onChange={e => setBrandName(e.target.value)} style={{ fontWeight: 900, fontSize: 20, padding: "4px 10px" }} />
                   ) : (
-                    <h1 style={{ color: "var(--text)", fontWeight: 900, fontSize: 24, margin: 0 }}>{brandName}</h1>
+                    <h1 style={{ color: "var(--text)", fontWeight: 900, fontSize: "clamp(20px, 4vw, 24px)", margin: 0, lineHeight: 1.2 }}>{brandName}</h1>
                   )}
-                  <span className="pill pill-purple" style={{ fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4 }}>
+                  <span className="pill pill-purple" style={{ fontSize: 11, display: "inline-flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
                     <ShieldCheck style={{ width: 12, height: 12 }} /> Verified Brand
                   </span>
                 </div>
 
+                {/* Tagline */}
                 {editing ? (
                   <input className="input" value={tagline} onChange={e => setTagline(e.target.value)} style={{ fontSize: 13, marginTop: 6, width: "100%" }} />
                 ) : (
-                  <p style={{ color: "var(--text-subtle)", fontSize: 14, margin: "4px 0 8px" }}>{tagline}</p>
+                  <p style={{ color: "var(--text-subtle)", fontSize: "clamp(12px, 3vw, 14px)", margin: "4px 0 10px", lineHeight: 1.5 }}>{tagline}</p>
                 )}
 
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 16, fontSize: 12, color: "var(--text-subtle)" }}>
-                  <span style={{ display: "flex", alignItems: "center", gap: 4 }}><Building2 style={{ width: 13, height: 13, color: "#7c3aed" }} /> {industry}</span>
-                  <span style={{ display: "flex", alignItems: "center", gap: 4 }}><MapPin style={{ width: 13, height: 13 }} /> {location}</span>
-                  <a href={website} target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 4, color: "#7c3aed", textDecoration: "none", fontWeight: 600 }}>
+                {/* Meta Pills / Icons */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 12, fontSize: 12, color: "var(--text-subtle)" }}>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}><Building2 style={{ width: 13, height: 13, color: "#7c3aed" }} /> {industry}</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}><MapPin style={{ width: 13, height: 13 }} /> {location}</span>
+                  <a href={website} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 4, color: "#7c3aed", textDecoration: "none", fontWeight: 600 }}>
                     <Globe style={{ width: 13, height: 13 }} /> {website.replace("https://", "")} <ExternalLink style={{ width: 11, height: 11 }} />
                   </a>
                 </div>
               </div>
             </div>
 
-            {/* Quick Stats Grid */}
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+            {/* Quick Stats Grid (Stretches 100% width on mobile) */}
+            <div className="brand-hero-stats" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10, width: "100%", maxWidth: 420 }}>
               {[
                 { label: "Campaigns Posted", val: "6", color: "#7c3aed" },
                 { label: "Creators Hired", val: "42", color: "#10b981" },
                 { label: "Escrow Funded", val: "$18.4k", color: "#0284c7" },
                 { label: "Creator Rating", val: "4.98★", color: "#f59e0b" },
               ].map(s => (
-                <div key={s.label} style={{ padding: "12px 18px", borderRadius: 14, background: "var(--surface-subtle)", border: "1px solid var(--border)", textAlign: "center", minWidth: 100 }}>
-                  <div style={{ color: s.color, fontWeight: 900, fontSize: 20 }}>{s.val}</div>
-                  <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 600, marginTop: 2 }}>{s.label}</div>
+                <div key={s.label} style={{ padding: "12px 14px", borderRadius: 14, background: "var(--surface-subtle)", border: "1px solid var(--border)", textAlign: "center" }}>
+                  <div style={{ color: s.color, fontWeight: 900, fontSize: "clamp(18px, 4vw, 22px)" }}>{s.val}</div>
+                  <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 600, marginTop: 2, whiteSpace: "nowrap" }}>{s.label}</div>
                 </div>
               ))}
             </div>
+
           </div>
         </div>
       </div>
