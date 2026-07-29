@@ -18,8 +18,8 @@ export default function DashLayout({ title, children }: DashProps) {
         <div
           onClick={() => setMobileOpen(false)}
           style={{
-            position: "fixed", inset: 0, zIndex: 90,
-            background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)",
+            position: "fixed", inset: 0, zIndex: 900,
+            background: "rgba(0,0,0,0.65)", backdropFilter: "blur(4px)",
             transition: "opacity 0.25s"
           }}
         />
@@ -28,17 +28,13 @@ export default function DashLayout({ title, children }: DashProps) {
       {/* Sidebar (handles desktop fixed vs mobile drawer internally) */}
       <Sidebar />
 
-      {/* Main area pushed right by sidebar on desktop, 0 margin on mobile */}
+      {/* Main area pushed right by sidebar on desktop (via CSS variable), 0 margin on mobile */}
       <div
         className="dash-main-area"
-        style={{
-          flex: 1, display: "flex", flexDirection: "column", minWidth: 0,
-          marginLeft: sidebarW,
-          transition: "margin-left 0.25s cubic-bezier(0.4,0,0.2,1)"
-        }}
+        style={{ "--sidebar-w": `${sidebarW}px` } as React.CSSProperties}
       >
         <Topbar title={title} />
-        <main className="dash-content-container" style={{ flex: 1, padding: "36px 44px" }}>
+        <main className="dash-content-container" style={{ flex: 1 }}>
           {children}
         </main>
       </div>
@@ -56,12 +52,12 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, subtitle, action }: PageHeaderProps) {
   return (
-    <div className="page-header-flex" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 32 }}>
+    <div className="page-header-flex" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 28 }}>
       <div>
         <h1 style={{ color: "var(--text)", fontWeight: 800, fontSize: 26, letterSpacing: "-0.03em", marginBottom: 6 }}>{title}</h1>
         {subtitle && <p style={{ color: "var(--text-subtle)", fontSize: 13, lineHeight: 1.5 }}>{subtitle}</p>}
       </div>
-      {action && <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>{action}</div>}
+      {action && <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>{action}</div>}
     </div>
   );
 }

@@ -118,7 +118,7 @@ export default function Sidebar() {
           style={{
             width: 30, height: 30, borderRadius: 8, flexShrink: 0,
             background: "none", border: "1px solid var(--border-strong)",
-            display: "flex", alignItems: "center", justifyContent: "center",
+            display: "none", alignItems: "center", justifyContent: "center",
             color: "var(--text-subtle)", cursor: "pointer",
             transition: "all 0.15s",
           }}

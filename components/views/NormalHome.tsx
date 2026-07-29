@@ -61,9 +61,9 @@ export default function NormalHome() {
           {campaigns.map((c, i) => (
             <div key={i} style={{
               display: "flex", alignItems: "center", justifyContent: "space-between",
-              padding: "18px 20px", borderRadius: 14,
+              padding: "16px 18px", borderRadius: 14,
               background: "var(--surface-subtle)",
-              border: "1px solid var(--border)", gap: 16
+              border: "1px solid var(--border)", gap: 12, flexWrap: "wrap"
             }}>
               <div>
                 <div style={{ color: "var(--text)", fontWeight: 600, fontSize: 14 }}>{c.title}</div>
