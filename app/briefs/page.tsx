@@ -260,7 +260,7 @@ export default function BriefsPage() {
   /* Filter then sort */
   const filteredCampaigns = mockCampaigns
     .filter(c => {
-      const matchesStatus = filterStatus === "all" || c.status === filterStatus;
+      const matchesStatus = filterStatus === "all" || c.niche === filterStatus;
       const matchesSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                             c.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
                             c.niche.toLowerCase().includes(searchQuery.toLowerCase());
@@ -310,15 +310,15 @@ export default function BriefsPage() {
         }
       />
 
-      {/* ── Status Filter Tabs + Sort ── */}
+      {/* ── Marketplace Category Filter Tabs + Sort ── */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 24, flexWrap: "wrap" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
         {[
-          { id: "all", label: "All Campaigns" },
-          { id: "active", label: "Active" },
-          { id: "waiting_for_review", label: "Waiting for Review" },
-          { id: "revision_requested", label: "Revision Requested" },
-          { id: "completed", label: "Completed" },
+          { id: "all", label: "All Open Briefs" },
+          { id: "Beauty & Skincare", label: "Beauty & Skincare" },
+          { id: "Tech & Audio", label: "Tech & Audio" },
+          { id: "Fitness & Nutrition", label: "Fitness & Nutrition" },
+          { id: "Wellness & Mindfulness", label: "Wellness & Mindfulness" },
         ].map(tab => {
           const isActive = filterStatus === tab.id;
           return (

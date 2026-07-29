@@ -8,17 +8,43 @@ import {
   Sparkles, ChevronDown, LogOut, Bell, Search, User, ShieldCheck, Check,
   FileText, Upload, SlidersHorizontal, HelpCircle, PanelLeftClose, PanelLeft,
   Sun, Moon, CreditCard, BadgeDollarSign, LayoutList, Crown, Wallet, Gift, MessageSquare, Menu, CheckCircle2, Clock,
-  BarChart3, CheckSquare, X
+  BarChart3, CheckSquare, X, FolderKanban
 } from "lucide-react";
 import { useRole } from "@/context/RoleContext";
 import { useUI, SIDEBAR_FULL, SIDEBAR_MINI } from "@/context/UIContext";
 
-const adminNav = [
+interface NavSingleItem {
+  href: string;
+  icon: any;
+  label: string;
+  children?: undefined;
+}
+
+interface NavGroupItem {
+  label: string;
+  icon: any;
+  children: { href: string; icon: any; label: string }[];
+  href?: undefined;
+}
+
+type NavEntry = NavSingleItem | NavGroupItem;
+
+const campaignSubMenu: NavGroupItem = {
+  label: "Campaign Workspace",
+  icon: FolderKanban,
+  children: [
+    { href: "/my-campaigns", icon: FileText,        label: "My Briefs"     },
+    { href: "/tracker",      icon: CheckSquare,     label: "Daily Tracker" },
+    { href: "/analytics",    icon: BarChart3,       label: "Analytics"     },
+    { href: "/submissions",  icon: Upload,          label: "Uploads"       },
+  ]
+};
+
+const adminNav: NavEntry[] = [
   { href: "/",                    icon: LayoutDashboard, label: "Overview"        },
   { href: "/admin/users",         icon: Users,           label: "Users"           },
   { href: "/admin/campaigns",     icon: Megaphone,       label: "Campaigns"       },
-  { href: "/tracker",             icon: CheckSquare,     label: "Daily Tracker"   },
-  { href: "/analytics",           icon: BarChart3,       label: "Analytics"       },
+  campaignSubMenu,
   { href: "/admin/content",       icon: FileVideo,       label: "Content Review"  },
   { href: "/admin/community",     icon: MessageSquare,   label: "Community Posts" },
   { href: "/admin/payouts",       icon: DollarSign,      label: "Payouts"         },
@@ -29,13 +55,10 @@ const adminNav = [
   { href: "/admin/settings",      icon: Settings,        label: "Settings"        },
 ];
 
-const creatorNav = [
+const creatorNav: NavEntry[] = [
   { href: "/",             icon: LayoutDashboard, label: "Overview"        },
-  { href: "/briefs",       icon: Megaphone,       label: "Browse Briefs"   },
-  { href: "/my-campaigns", icon: FileText,        label: "My Briefs"       },
-  { href: "/tracker",      icon: CheckSquare,     label: "Daily Tracker"   },
-  { href: "/analytics",    icon: BarChart3,       label: "Analytics"       },
-  { href: "/submissions",  icon: Upload,          label: "Uploads"         },
+  { href: "/briefs",       icon: Megaphone,       label: "Browse Marketplace" },
+  campaignSubMenu,
   { href: "/community",    icon: MessageSquare,   label: "Community Hub"   },
   { href: "/subscription", icon: Crown,           label: "My Subscription" },
   { href: "/earnings",     icon: Wallet,          label: "Earnings & Fees" },
@@ -44,12 +67,10 @@ const creatorNav = [
   { href: "/profile",      icon: User,            label: "My Profile"      },
 ];
 
-const normalNav = [
+const normalNav: NavEntry[] = [
   { href: "/",             icon: LayoutDashboard, label: "Overview"        },
-  { href: "/browse",       icon: Megaphone,       label: "Browse Creators" },
-  { href: "/my-campaigns", icon: FileText,        label: "My Campaigns"    },
-  { href: "/tracker",      icon: CheckSquare,     label: "Daily Tracker"   },
-  { href: "/analytics",    icon: BarChart3,       label: "Analytics"       },
+  { href: "/browse",       icon: Megaphone,       label: "Browse Marketplace" },
+  campaignSubMenu,
   { href: "/community",    icon: MessageSquare,   label: "Community Hub"   },
   { href: "/subscription", icon: Crown,           label: "Plans & Pricing" },
   { href: "/deposit",      icon: CreditCard,      label: "Make Deposit"    },
@@ -165,14 +186,26 @@ export default function Sidebar() {
             {section}
           </div>
         )}
-        {nav.map(({ href, icon: Icon, label }) => {
-          const active = pathname === href;
+        {nav.map((item, idx) => {
+          if (item.children) {
+            return (
+              <NavDropdown
+                key={idx}
+                item={item}
+                collapsed={!isMobile && collapsed}
+                setMobileOpen={setMobileOpen}
+                pathname={pathname}
+              />
+            );
+          }
+          const active = pathname === item.href;
+          const Icon = item.icon;
           return (
             <NavItem
-              key={href}
-              href={href}
+              key={item.href}
+              href={item.href}
               icon={<Icon style={{ width: 17, height: 17, flexShrink: 0, color: active ? "var(--accent-text)" : "var(--text-muted)" }} />}
-              label={label}
+              label={item.label}
               active={active}
               collapsed={!isMobile && collapsed}
               setMobileOpen={setMobileOpen}
@@ -194,6 +227,67 @@ export default function Sidebar() {
         </div>
       )}
     </aside>
+  );
+}
+
+/* ── Collapsible Sub-Menu Dropdown Item ── */
+function NavDropdown({ item, collapsed, setMobileOpen, pathname }: {
+  item: NavGroupItem; collapsed: boolean; setMobileOpen?: (open: boolean) => void; pathname: string;
+}) {
+  const isAnyChildActive = item.children.some(c => c.href === pathname);
+  const [open, setOpen] = useState(isAnyChildActive);
+
+  useEffect(() => {
+    if (isAnyChildActive) setOpen(true);
+  }, [isAnyChildActive, pathname]);
+
+  const Icon = item.icon;
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      {/* Dropdown Header Button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className={`nav-link${isAnyChildActive ? " active" : ""}`}
+        style={{
+          width: "100%", padding: "10px 12px",
+          justify: collapsed ? "center" : "space-between",
+          background: isAnyChildActive ? "var(--nav-active-bg)" : open ? "var(--nav-hover-bg)" : "transparent",
+          border: "none", cursor: "pointer", fontFamily: "inherit"
+        }}
+        title={collapsed ? item.label : undefined}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 12, overflow: "hidden" }}>
+          <Icon style={{ width: 17, height: 17, flexShrink: 0, color: isAnyChildActive ? "var(--accent-text)" : "var(--text-muted)" }} />
+          {!collapsed && <span style={{ overflow: "hidden", whiteSpace: "nowrap", fontWeight: 600 }}>{item.label}</span>}
+        </div>
+        {!collapsed && (
+          <ChevronDown style={{ width: 14, height: 14, color: "var(--text-subtle)", transition: "transform 0.2s", transform: open ? "rotate(180deg)" : "none" }} />
+        )}
+      </button>
+
+      {/* Expanded Sub-Items */}
+      {open && !collapsed && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 2, paddingLeft: 18, borderLeft: "2px solid var(--border-strong)", marginLeft: 18, marginTop: 2, marginBottom: 4 }}>
+          {item.children.map(sub => {
+            const active = pathname === sub.href;
+            const SubIcon = sub.icon;
+            return (
+              <Link
+                key={sub.href}
+                href={sub.href}
+                onClick={() => setMobileOpen?.(false)}
+                className={`nav-link${active ? " active" : ""}`}
+                style={{ padding: "8px 10px", fontSize: 12, height: 34 }}
+              >
+                <SubIcon style={{ width: 14, height: 14, flexShrink: 0, color: active ? "var(--accent-text)" : "var(--text-muted)" }} />
+                <span style={{ overflow: "hidden", whiteSpace: "nowrap" }}>{sub.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
 
