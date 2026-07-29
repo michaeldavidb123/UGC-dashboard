@@ -12,6 +12,9 @@ interface UIContextType {
   toggleTheme: () => void;
   collapsed: boolean;
   toggleSidebar: () => void;
+  mobileOpen: boolean;
+  setMobileOpen: (open: boolean) => void;
+  toggleMobileOpen: () => void;
   sidebarW: number;
 }
 
@@ -20,6 +23,9 @@ const UIContext = createContext<UIContextType>({
   toggleTheme: () => {},
   collapsed: false,
   toggleSidebar: () => {},
+  mobileOpen: false,
+  setMobileOpen: () => {},
+  toggleMobileOpen: () => {},
   sidebarW: SIDEBAR_FULL,
 });
 
@@ -30,6 +36,7 @@ export function useUI() {
 export function UIProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   // Apply theme to <html> element
   useEffect(() => {
@@ -37,12 +44,29 @@ export function UIProvider({ children }: { children: ReactNode }) {
     root.setAttribute("data-theme", theme);
   }, [theme]);
 
+  // Close mobile sidebar on window resize if larger than 768px
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const toggleTheme = () => setTheme(t => t === "dark" ? "light" : "dark");
   const toggleSidebar = () => setCollapsed(c => !c);
+  const toggleMobileOpen = () => setMobileOpen(m => !m);
   const sidebarW = collapsed ? SIDEBAR_MINI : SIDEBAR_FULL;
 
   return (
-    <UIContext.Provider value={{ theme, toggleTheme, collapsed, toggleSidebar, sidebarW }}>
+    <UIContext.Provider value={{
+      theme, toggleTheme,
+      collapsed, toggleSidebar,
+      mobileOpen, setMobileOpen, toggleMobileOpen,
+      sidebarW
+    }}>
       {children}
     </UIContext.Provider>
   );

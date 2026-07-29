@@ -12,7 +12,7 @@ export default function NormalHome() {
   return (
     <div>
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 40 }}>
+      <div className="page-header-flex" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 40 }}>
         <div>
           <h1 style={{ color: "var(--text)", fontWeight: 800, fontSize: 28, letterSpacing: "-0.03em", marginBottom: 8 }}>
             GlowBrand Workspace
@@ -28,7 +28,7 @@ export default function NormalHome() {
       </div>
 
       {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 32 }}>
+      <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 32 }}>
         {[
           { label: "Campaigns Launched", value: "3",  icon: Megaphone },
           { label: "Creators Partnered", value: "24", icon: Users },

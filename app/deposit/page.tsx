@@ -91,7 +91,7 @@ export default function DepositPage() {
         </button>
       </header>
 
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "52px 24px", display: "grid", gridTemplateColumns: "1fr 360px", gap: 32, alignItems: "start" }}>
+      <div className="grid-responsive-2col" style={{ maxWidth: 900, margin: "0 auto", padding: "40px 20px", display: "grid", gridTemplateColumns: "1fr 360px", gap: 32, alignItems: "start" }}>
 
         {/* LEFT: Payment Form */}
         <div>

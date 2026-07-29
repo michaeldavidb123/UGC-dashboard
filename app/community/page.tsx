@@ -200,7 +200,7 @@ export default function CommunityPage() {
         }
       />
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 28, alignItems: "start" }}>
+      <div className="grid-responsive-2col" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 28, alignItems: "start" }}>
 
         {/* LEFT: FEED & FILTERS */}
         <div>

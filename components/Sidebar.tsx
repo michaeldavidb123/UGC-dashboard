@@ -7,7 +7,7 @@ import {
   LayoutDashboard, Users, Megaphone, FileVideo, DollarSign, Settings,
   Sparkles, ChevronDown, LogOut, Bell, Search, User, ShieldCheck, Check,
   FileText, Upload, SlidersHorizontal, HelpCircle, PanelLeftClose, PanelLeft,
-  Sun, Moon, CreditCard, BadgeDollarSign, LayoutList, Crown, Wallet, Gift, MessageSquare
+  Sun, Moon, CreditCard, BadgeDollarSign, LayoutList, Crown, Wallet, Gift, MessageSquare, Menu
 } from "lucide-react";
 import { useRole } from "@/context/RoleContext";
 import { useUI, SIDEBAR_FULL, SIDEBAR_MINI } from "@/context/UIContext";
@@ -51,7 +51,7 @@ const normalNav = [
 export default function Sidebar() {
   const pathname = usePathname();
   const { effectiveView } = useRole();
-  const { collapsed, toggleSidebar, sidebarW } = useUI();
+  const { collapsed, toggleSidebar, sidebarW, mobileOpen, setMobileOpen } = useUI();
 
   const nav =
     effectiveView === "admin" ? adminNav :
@@ -64,7 +64,7 @@ export default function Sidebar() {
     "Workspace";
 
   return (
-    <aside style={{
+    <aside className={`app-sidebar ${mobileOpen ? "mobile-open" : ""}`} style={{
       position: "fixed",
       top: 0,
       left: 0,
@@ -74,10 +74,10 @@ export default function Sidebar() {
       borderRight: "1px solid var(--border-strong)",
       display: "flex",
       flexDirection: "column",
-      zIndex: 50,
+      zIndex: 100,
       overflowY: "auto",
       overflowX: "hidden",
-      transition: "width 0.25s cubic-bezier(0.4,0,0.2,1)",
+      transition: "width 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.25s cubic-bezier(0.4,0,0.2,1)",
       flexShrink: 0,
     }}>
 
@@ -149,6 +149,7 @@ export default function Sidebar() {
               label={label}
               active={active}
               collapsed={collapsed}
+              setMobileOpen={setMobileOpen}
             />
           );
         })}
@@ -171,14 +172,15 @@ export default function Sidebar() {
 }
 
 /* ── Tooltip Nav Item ── */
-function NavItem({ href, icon, label, active, collapsed }: {
-  href: string; icon: React.ReactNode; label: string; active: boolean; collapsed: boolean;
+function NavItem({ href, icon, label, active, collapsed, setMobileOpen }: {
+  href: string; icon: React.ReactNode; label: string; active: boolean; collapsed: boolean; setMobileOpen?: (open: boolean) => void;
 }) {
   return (
     <div style={{ position: "relative" }} className="sidebar-nav-item">
       <Link
         href={href}
         className={`nav-link${active ? " active" : ""}`}
+        onClick={() => setMobileOpen?.(false)}
         style={{ padding: "10px 12px", justifyContent: collapsed ? "center" : "flex-start" }}
         title={collapsed ? label : undefined}
       >
@@ -194,7 +196,7 @@ function NavItem({ href, icon, label, active, collapsed }: {
 ════════════════════════════════════════════ */
 export function Topbar({ title }: { title: string }) {
   const { role, activeView, setActiveView } = useRole();
-  const { theme, toggleTheme } = useUI();
+  const { theme, toggleTheme, toggleMobileOpen } = useUI();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -211,7 +213,7 @@ export function Topbar({ title }: { title: string }) {
   const badge = activeView === "admin" ? "Administrator" : activeView === "creator" ? "Creator" : "Brand Buyer";
 
   return (
-    <header style={{
+    <header className="topbar-header" style={{
       height: 68,
       borderBottom: "1px solid var(--border-strong)",
       background: "var(--sidebar-bg)",
@@ -225,8 +227,16 @@ export function Topbar({ title }: { title: string }) {
       backdropFilter: "blur(12px)",
       transition: "background 0.25s ease",
     }}>
-      {/* Title */}
+      {/* Title + Mobile Hamburger Button */}
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <button
+          onClick={toggleMobileOpen}
+          className="btn-icon btn"
+          title="Open Navigation"
+          style={{ display: "inline-flex" }}
+        >
+          <Menu style={{ width: 18, height: 18 }} />
+        </button>
         <h2 style={{ color: "var(--text)", fontWeight: 700, fontSize: 18, letterSpacing: "-0.02em" }}>{title}</h2>
         <span className={`pill ${activeView === "admin" ? "pill-blue" : activeView === "creator" ? "pill-amber" : "pill-purple"}`}>
           <span style={{ width: 6, height: 6, borderRadius: 999, background: "currentColor", display: "inline-block" }} />

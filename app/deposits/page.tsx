@@ -67,7 +67,7 @@ export default function UserDepositsPage() {
       />
 
       {/* KPI Cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 28 }}>
+      <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 28 }}>
         <div className="stat-card card-lift">
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
             <span style={{ color: "var(--text-subtle)", fontSize: 12, fontWeight: 600 }}>TOTAL DEPOSITED (LIFETIME)</span>
@@ -131,7 +131,7 @@ export default function UserDepositsPage() {
       </div>
 
       {/* Deposits Table */}
-      <div className="card" style={{ borderRadius: 18, overflow: "hidden" }}>
+      <div className="card table-responsive" style={{ borderRadius: 18, overflow: "hidden" }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr style={{ borderBottom: "1px solid var(--border)" }}>

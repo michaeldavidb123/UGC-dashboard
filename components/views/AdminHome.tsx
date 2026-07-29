@@ -27,7 +27,7 @@ export default function AdminHome() {
   return (
     <div>
       {/* ── Page Header ─────────────────────────────────── */}
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 40 }}>
+      <div className="page-header-flex" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 40 }}>
         <div>
           <h1 style={{ color: "var(--text)", fontWeight: 800, fontSize: 28, letterSpacing: "-0.03em", marginBottom: 8 }}>
             Admin Overview
@@ -43,7 +43,7 @@ export default function AdminHome() {
       </div>
 
       {/* ── KPI Stat Cards ───────────────────────────────── */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20, marginBottom: 32 }}>
+      <div className="grid-responsive-4col" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20, marginBottom: 32 }}>
         {stats.map((s) => (
           <div key={s.label} className="stat-card card-lift">
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -64,7 +64,7 @@ export default function AdminHome() {
       </div>
 
       {/* ── Bottom Row ───────────────────────────────────── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 24, alignItems: "start" }}>
+      <div className="grid-responsive-2col" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 24, alignItems: "start" }}>
 
         {/* Activity Feed */}
         <div className="card" style={{ padding: "28px 28px" }}>

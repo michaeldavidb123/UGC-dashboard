@@ -294,8 +294,8 @@ export default function CreatorHome() {
         </div>
       </div>
 
-      {/* ── 2. QUICK ACTIONS BAR (View Campaigns, Upload Submission, Edit Profile) ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+      {/* ── 2. QUICK ACTIONS BAR ── */}
+      <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
         {/* Quick Action 1: View Campaigns */}
         <Link
           href="/briefs"
@@ -403,7 +403,7 @@ export default function CreatorHome() {
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
         {/* TOP ROW: Left Balance Card + Right 3-Slide Image Carousel */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.25fr", gap: 16 }}>
+        <div className="grid-responsive-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1.25fr", gap: 16 }}>
 
           {/* LEFT FEATURED BALANCE CARD */}
           <div style={{
@@ -630,7 +630,7 @@ export default function CreatorHome() {
         </div>
 
         {/* BOTTOM ROW: 3 EQUAL STATS CARDS SIDE BY SIDE */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
 
           {/* Card 1: Total Lifetime Earned */}
           <div style={{
@@ -732,8 +732,8 @@ export default function CreatorHome() {
 
       </div>
 
-      {/* ── 4. MAIN CONTENT COLUMNS: Active Briefs + Sidebar (Upcoming Deadlines & Recent Notifications) ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 20, marginTop: 4 }}>
+      {/* ── 4. MAIN CONTENT COLUMNS ── */}
+      <div className="grid-responsive-2col" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 20, marginTop: 4 }}>
 
         {/* Left Main Column: Active Campaign Briefs & Recent Uploads */}
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>

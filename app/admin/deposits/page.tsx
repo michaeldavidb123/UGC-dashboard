@@ -77,7 +77,7 @@ export default function AdminDepositsPage() {
       />
 
       {/* KPI Strip */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 28 }}>
+      <div className="grid-responsive-4col" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 28 }}>
         {kpis.map(k => (
           <div key={k.label} className="stat-card card-lift" style={{ borderLeft: `3px solid ${k.color}` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
@@ -92,7 +92,7 @@ export default function AdminDepositsPage() {
       </div>
 
       {/* Table */}
-      <div className="card" style={{ borderRadius: 18, overflow: "hidden" }}>
+      <div className="card table-responsive" style={{ borderRadius: 18, overflow: "hidden" }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr style={{ borderBottom: "1px solid var(--border)" }}>

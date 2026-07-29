@@ -219,7 +219,7 @@ export default function AdminPlansPage() {
       </div>
 
       {/* Plan cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+      <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
         {filtered.map(plan => {
           const PIcon = PLAN_ICONS[plan.name] || Zap;
           const color = PLAN_COLORS[plan.name] || "#0284c7";

@@ -85,7 +85,7 @@ export default function AdminSubscriptionsPage() {
       />
 
       {/* KPIs */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 28 }}>
+      <div className="grid-responsive-4col" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 28 }}>
         {kpis.map(k => (
           <div key={k.label} className="stat-card card-lift">
             <div style={{ color: "var(--text)", fontWeight: 900, fontSize: 26, letterSpacing: "-0.03em" }}>{k.value}</div>
@@ -96,7 +96,7 @@ export default function AdminSubscriptionsPage() {
       </div>
 
       {/* Table */}
-      <div className="card" style={{ borderRadius: 18, overflow: "hidden" }}>
+      <div className="card table-responsive" style={{ borderRadius: 18, overflow: "hidden" }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr style={{ borderBottom: "1px solid var(--border)" }}>

@@ -37,7 +37,7 @@ export default function AdminUsersPage() {
       />
 
       {/* Table Card */}
-      <div className="card" style={{ overflow: "hidden" }}>
+      <div className="card table-responsive" style={{ overflow: "hidden" }}>
         <table className="table">
           <thead>
             <tr>

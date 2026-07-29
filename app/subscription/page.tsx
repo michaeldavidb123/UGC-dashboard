@@ -230,7 +230,7 @@ export default function SubscriptionPage() {
         </div>
 
         {/* Plan cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 40 }}>
+        <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 40 }}>
           {plans.map(plan => (
             <PlanCard
               key={plan.id}

@@ -65,7 +65,7 @@ export default function UserReferralsPage() {
       <div className="card" style={{ padding: "32px", borderRadius: 22, background: "linear-gradient(135deg, rgba(2,132,199,0.12) 0%, rgba(124,58,237,0.08) 100%)", border: "1px solid rgba(2,132,199,0.3)", marginBottom: 28, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", right: -40, top: -40, width: 220, height: 220, borderRadius: 999, background: "radial-gradient(circle, rgba(2,132,199,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
         
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 32, alignItems: "center" }}>
+        <div className="grid-responsive-2col" style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: 32, alignItems: "center" }}>
           <div>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(2,132,199,0.15)", border: "1px solid rgba(2,132,199,0.3)", borderRadius: 999, padding: "5px 14px", fontSize: 12, fontWeight: 700, color: "#0284c7", marginBottom: 14 }}>
               <Gift style={{ width: 13, height: 13 }} /> Give $50, Get $50
@@ -127,7 +127,7 @@ export default function UserReferralsPage() {
       </div>
 
       {/* ── KPIs ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18, marginBottom: 28 }}>
+      <div className="grid-responsive-4col" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18, marginBottom: 28 }}>
         {[
           { label: "Total Referred",      value: "6 Users",  sub: "4 Creators, 2 Brands", color: "#0284c7", icon: Users },
           { label: "Successful Conversions", value: "4 Users", sub: "Met reward criteria",  color: "#10b981", icon: CheckCircle2 },
@@ -150,7 +150,7 @@ export default function UserReferralsPage() {
       {/* ── HOW IT WORKS ── */}
       <div style={{ marginBottom: 32 }}>
         <div style={{ color: "var(--text)", fontWeight: 800, fontSize: 16, marginBottom: 16 }}>How Referrals Work</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
           {[
             { step: "01", title: "Share Your Link", desc: "Send your unique link or code to creators or brand owners you know.", icon: Share2 },
             { step: "02", title: "Friend Signs Up", desc: "They register on UGC Studio using your referral code during setup.", icon: Users },
@@ -187,7 +187,7 @@ export default function UserReferralsPage() {
           </div>
         </div>
 
-        <div className="card" style={{ borderRadius: 18, overflow: "hidden" }}>
+        <div className="card table-responsive" style={{ borderRadius: 18, overflow: "hidden" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid var(--border)" }}>

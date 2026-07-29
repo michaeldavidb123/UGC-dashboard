@@ -66,7 +66,7 @@ export default function AdminReferralsPage() {
       />
 
       {/* KPI Cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18, marginBottom: 28 }}>
+      <div className="grid-responsive-4col" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18, marginBottom: 28 }}>
         {[
           { label: "Total Platform Referrals", value: "1,420", delta: "+24.5%", color: "#0284c7", icon: Users },
           { label: "Conversion Rate",         value: "68.4%", delta: "+3.2%",  color: "#10b981", icon: TrendingUp },
@@ -87,7 +87,7 @@ export default function AdminReferralsPage() {
       </div>
 
       {/* Top Row: Leaderboard + Settings */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: 24, marginBottom: 28, alignItems: "start" }}>
+      <div className="grid-responsive-2col" style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: 24, marginBottom: 28, alignItems: "start" }}>
 
         {/* Leaderboard */}
         <div className="card" style={{ padding: "24px", borderRadius: 18 }}>
@@ -165,7 +165,7 @@ export default function AdminReferralsPage() {
           </div>
         </div>
 
-        <div className="card" style={{ borderRadius: 18, overflow: "hidden" }}>
+        <div className="card table-responsive" style={{ borderRadius: 18, overflow: "hidden" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid var(--border)" }}>

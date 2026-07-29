@@ -130,7 +130,7 @@ export default function AdminCommunityPage() {
       />
 
       {/* KPIs */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18, marginBottom: 28 }}>
+      <div className="grid-responsive-4col" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18, marginBottom: 28 }}>
         {[
           { label: "Total Community Posts", value: posts.length.toString(), sub: "All time", color: "#0284c7", icon: MessageSquare },
           { label: "Total Comments",         value: "1,240", sub: "User replies", color: "#10b981", icon: Sparkles },
@@ -178,7 +178,7 @@ export default function AdminCommunityPage() {
       </div>
 
       {/* Posts Table */}
-      <div className="card" style={{ borderRadius: 18, overflow: "hidden" }}>
+      <div className="card table-responsive" style={{ borderRadius: 18, overflow: "hidden" }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr style={{ borderBottom: "1px solid var(--border)" }}>

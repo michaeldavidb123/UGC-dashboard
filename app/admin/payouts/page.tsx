@@ -22,7 +22,7 @@ export default function AdminPayoutsPage() {
       />
 
       {/* Summary Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 32 }}>
+      <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
         {[
           { label: "Pending Requests", value: "$450.00", count: "1 request", icon: Clock, color: "#d97706" },
           { label: "Processing", value: "$1,200.00", count: "1 transfer", icon: DollarSign, color: "var(--accent-text)" },
