@@ -197,29 +197,82 @@ export default function ProfileView() {
 
   return (
     <DashLayout title="My Profile">
-      <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 28, alignItems: "start" }}>
+      {/* ── RESPONSIVE CSS INJECTION ── */}
+      <style>{`
+        .profile-container {
+          display: grid;
+          grid-template-columns: 220px 1fr;
+          gap: 28px;
+          align-items: start;
+        }
+        .profile-nav-card {
+          position: sticky;
+          top: 24px;
+        }
+        .profile-nav-list {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .auto-grid-2 {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 16px;
+        }
+        .auto-grid-3 {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+          gap: 16px;
+        }
+        @media (max-width: 768px) {
+          .profile-container {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          .profile-nav-card {
+            position: relative;
+            top: 0;
+            margin-bottom: 12px;
+            overflow-x: auto;
+          }
+          .profile-nav-list {
+            flex-direction: row;
+            overflow-x: auto;
+            padding-bottom: 4px;
+          }
+          .profile-nav-btn {
+            white-space: nowrap;
+          }
+          .profile-header-padding {
+            padding: 0 16px 20px !important;
+          }
+        }
+      `}</style>
+
+      <div className="profile-container">
 
         {/* ══════════════════════════════════════
-            STICKY SIDEBAR NAV
+            STICKY SIDEBAR NAV (Horizontally scrolls on mobile)
         ══════════════════════════════════════ */}
-        <div style={{ position: "sticky", top: 24 }}>
-          <div className="card" style={{ padding: "14px 10px" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <div className="profile-nav-card">
+          <div className="card" style={{ padding: "12px 10px" }}>
+            <div className="profile-nav-list">
               {navSections.map(({ id, label, icon: Icon }) => {
                 const active = activeSection === id;
                 return (
                   <button
                     key={id}
                     onClick={() => scrollTo(id)}
+                    className="profile-nav-btn"
                     style={{
                       display: "flex", alignItems: "center", gap: 9,
-                      padding: "10px 13px", borderRadius: 12,
+                      padding: "9px 12px", borderRadius: 12,
                       background: active ? "rgba(2,132,199,0.1)" : "transparent",
                       border: `1px solid ${active ? "rgba(2,132,199,0.25)" : "transparent"}`,
                       color: active ? "#0284c7" : "var(--text-subtle)",
                       fontWeight: active ? 700 : 500, fontSize: 13,
                       cursor: "pointer", textAlign: "left", fontFamily: "inherit",
-                      transition: "all 0.15s"
+                      transition: "all 0.15s", flexShrink: 0
                     }}
                   >
                     <Icon style={{ width: 14, height: 14, flexShrink: 0 }} />
@@ -324,7 +377,7 @@ export default function ProfileView() {
               <div style={{ height: 8, background: "var(--progress-bg)", borderRadius: 999, overflow: "hidden", marginBottom: 16 }}>
                 <div style={{ height: "100%", width: `${completionPct}%`, background: "linear-gradient(90deg,#0284c7,#38bdf8)", borderRadius: 999, transition: "width 0.4s ease" }} />
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <div className="auto-grid-2">
                 {completionItems.map(item => (
                   <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", borderRadius: 10, background: item.done ? "rgba(16,185,129,0.06)" : "var(--surface-subtle)", border: `1px solid ${item.done ? "rgba(16,185,129,0.2)" : "var(--border)"}` }}>
                     {item.done
@@ -340,7 +393,7 @@ export default function ProfileView() {
 
           {/* ── ABOUT ME ── */}
           <Section id="about" title="About Me" subtitle="Your public bio and personal information shown to brands.">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            <div className="auto-grid-2">
               <Field label="FULL NAME">
                 <input type="text" defaultValue="Sarah Mitchell" className="input" />
               </Field>
@@ -422,7 +475,7 @@ export default function ProfileView() {
 
           {/* ── AUDIENCE INSIGHTS ── */}
           <Section id="audience" title="Audience Insights" subtitle="Help brands understand your audience. Enter these manually from your platform analytics.">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
+            <div className="auto-grid-3">
               <Field label="PRIMARY AUDIENCE COUNTRY">
                 <input type="text" defaultValue="United Kingdom" className="input" />
               </Field>
@@ -468,7 +521,7 @@ export default function ProfileView() {
                 No portfolio items yet. Add links to your best content above.
               </div>
             ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div className="auto-grid-2">
                 {portfolioLinks.map((item, i) => (
                   <div key={i} style={{ padding: "16px 18px", borderRadius: 14, background: "var(--surface-subtle)", border: "1px solid var(--border-strong)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -530,7 +583,7 @@ export default function ProfileView() {
 
           {/* ── ACCOUNT INFORMATION ── */}
           <Section id="account" title="Account Information" subtitle="Manage your login credentials and contact details.">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
+            <div className="auto-grid-2" style={{ marginBottom: 20 }}>
               <Field label="EMAIL ADDRESS">
                 <div style={{ display: "flex", gap: 8 }}>
                   <input type="email" defaultValue="sarah@email.com" className="input" style={{ flex: 1 }} />
