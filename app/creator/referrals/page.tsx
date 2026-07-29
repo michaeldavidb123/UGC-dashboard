@@ -1,3 +1,3 @@
 "use client";
-import ReferralsPage from "@/app/referrals/page";
-export default function CreatorReferralsPage() { return <ReferralsPage />; }
+import ReferralsView from "@/components/shared_views/ReferralsView";
+export default ReferralsView;

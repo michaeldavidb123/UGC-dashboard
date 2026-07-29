@@ -1,7 +1,3 @@
 "use client";
-
-import PortfolioPage from "@/app/portfolio/page";
-
-export default function CreatorPortfolioPage() {
-  return <PortfolioPage />;
-}
+import PortfolioView from "@/components/shared_views/PortfolioView";
+export default PortfolioView;

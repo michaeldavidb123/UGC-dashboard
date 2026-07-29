@@ -1,3 +1,3 @@
 "use client";
-import ProfilePage from "@/app/profile/page";
-export default function CreatorProfilePage() { return <ProfilePage />; }
+import ProfileView from "@/components/shared_views/ProfileView";
+export default ProfileView;

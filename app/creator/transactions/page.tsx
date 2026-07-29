@@ -1,3 +1,3 @@
 "use client";
-import TransactionsPage from "@/app/transactions/page";
-export default function CreatorTransactionsPage() { return <TransactionsPage />; }
+import TransactionsView from "@/components/shared_views/TransactionsView";
+export default TransactionsView;

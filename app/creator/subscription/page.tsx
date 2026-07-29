@@ -1,3 +1,3 @@
 "use client";
-import SubscriptionPage from "@/app/subscription/page";
-export default function CreatorSubscriptionPage() { return <SubscriptionPage />; }
+import SubscriptionView from "@/components/shared_views/SubscriptionView";
+export default SubscriptionView;

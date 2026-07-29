@@ -1,3 +1,3 @@
 "use client";
-import CommunityPage from "@/app/community/page";
-export default function CreatorCommunityPage() { return <CommunityPage />; }
+import CommunityView from "@/components/shared_views/CommunityView";
+export default CommunityView;
