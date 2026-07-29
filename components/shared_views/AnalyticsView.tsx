@@ -69,7 +69,7 @@ export default function AnalyticsView() {
               { label: "Conversion Rate", value: "3.25%", delta: "+0.8%", color: "#f59e0b", icon: Target },
               { label: "Total Earnings Growth", value: "$4,250.00", delta: "+34.1%", color: "#8b5cf6", icon: DollarSign },
             ].map(k => (
-              <div key={k.label} className="stat-card card-lift" style={{ borderLeft: `3px solid ${k.color}` }}>
+              <div key={k.label} className="stat-card card-lift" className="card card-lift">
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
                   <span style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700, letterSpacing: "0.04em" }}>{k.label.toUpperCase()}</span>
                   <div style={{ width: 30, height: 30, borderRadius: 8, background: `${k.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -91,7 +91,7 @@ export default function AnalyticsView() {
               { label: "Total Deliverables Approved", value: "84 Reels", delta: "+18 new", color: "#0284c7", icon: Award },
               { label: "Cost Per Acquisition (CPA)", value: "$14.20", delta: "-$2.10", color: "#f59e0b", icon: DollarSign },
             ].map(k => (
-              <div key={k.label} className="stat-card card-lift" style={{ borderLeft: `3px solid ${k.color}` }}>
+              <div key={k.label} className="stat-card card-lift" className="card card-lift">
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
                   <span style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700, letterSpacing: "0.04em" }}>{k.label.toUpperCase()}</span>
                   <div style={{ width: 30, height: 30, borderRadius: 8, background: `${k.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>

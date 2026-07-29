@@ -371,7 +371,7 @@ export default function ProfileView() {
 
           {/* ── PROFILE COMPLETION ── */}
           <div id="completion" style={{ marginBottom: 24 }}>
-            <div className="card" style={{ padding: "24px 28px", borderRadius: 18, borderLeft: "4px solid #0284c7" }}>
+            <div className="card" style={{ padding: "24px 28px", borderRadius: 18 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, flexWrap: "wrap", gap: 12 }}>
                 <div>
                   <div style={{ color: "var(--text)", fontWeight: 800, fontSize: 16 }}>Profile Completion</div>

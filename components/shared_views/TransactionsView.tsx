@@ -89,7 +89,7 @@ export default function TransactionsView() {
       <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 28 }}>
         
         {/* Card 1: Locked Escrow */}
-        <div className="card" style={{ padding: "22px", borderRadius: 20, borderLeft: "4px solid #0284c7" }}>
+        <div className="card" style={{ padding: "22px", borderRadius: 20 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
             <span style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700, letterSpacing: "0.04em" }}>LOCKED IN ESCROW</span>
             <Lock style={{ width: 16, height: 16, color: "#0284c7" }} />
@@ -99,7 +99,7 @@ export default function TransactionsView() {
         </div>
 
         {/* Card 2: Cleared Payouts */}
-        <div className="card" style={{ padding: "22px", borderRadius: 20, borderLeft: "4px solid #10b981" }}>
+        <div className="card" style={{ padding: "22px", borderRadius: 20 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
             <span style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700, letterSpacing: "0.04em" }}>CLEARED EARNINGS / PAYOUTS</span>
             <CheckCircle2 style={{ width: 16, height: 16, color: "#10b981" }} />
@@ -109,7 +109,7 @@ export default function TransactionsView() {
         </div>
 
         {/* Card 3: Pending Escrow Releases */}
-        <div className="card" style={{ padding: "22px", borderRadius: 20, borderLeft: "4px solid #f59e0b" }}>
+        <div className="card" style={{ padding: "22px", borderRadius: 20 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
             <span style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700, letterSpacing: "0.04em" }}>PENDING ESCROW RELEASES</span>
             <Clock style={{ width: 16, height: 16, color: "#f59e0b" }} />

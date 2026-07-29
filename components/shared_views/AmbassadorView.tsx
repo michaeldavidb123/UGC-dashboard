@@ -190,7 +190,7 @@ export default function AmbassadorView() {
             <Award style={{ width: 18, height: 18, color: "#f59e0b" }} /> My Active Ambassador Retainers
           </div>
 
-          <div className="card" style={{ padding: "20px 24px", borderRadius: 20, borderLeft: "5px solid #0284c7", background: "var(--surface)" }}>
+          <div className="card" style={{ padding: "20px 24px", borderRadius: 20, background: "var(--surface)" }}>
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <div style={{ width: 44, height: 44, borderRadius: 12, background: "#0284c7", color: "#fff", fontWeight: 900, fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>

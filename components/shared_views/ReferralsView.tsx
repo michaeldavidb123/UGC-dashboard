@@ -190,7 +190,7 @@ export default function ReferralsView() {
           { label: "Total Earned", value: "$300.00", sub: "Credited to wallet", color: "#f59e0b", icon: DollarSign },
           { label: "Pending Rewards", value: "$50.00", sub: "Awaiting 1st brief", color: "#8b5cf6", icon: Clock },
         ].map(k => (
-          <div key={k.label} className="card card-lift" style={{ padding: 20, borderRadius: 18, borderLeft: `4px solid ${k.color}` }}>
+          <div key={k.label} className="card card-lift" style={{ padding: 20, borderRadius: 18 }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
               <span style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700, letterSpacing: "0.04em" }}>{k.label.toUpperCase()}</span>
               <div style={{ width: 32, height: 32, borderRadius: 9, background: `${k.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>

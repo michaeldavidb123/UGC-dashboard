@@ -34,19 +34,19 @@ export default function CreatorEarningsPage() {
 
       {/* KPI Cards */}
       <div className="grid-responsive-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 28 }}>
-        <div className="card" style={{ padding: "22px", borderRadius: 20, borderLeft: "4px solid #10b981" }}>
+        <div className="card" style={{ padding: "22px", borderRadius: 20 }}>
           <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700 }}>CLEARED EARNINGS</div>
           <div style={{ color: "#10b981", fontWeight: 900, fontSize: 30, marginTop: 4 }}>$3,840.00</div>
           <div style={{ color: "var(--text-subtle)", fontSize: 12, marginTop: 2 }}>Ready for withdrawal</div>
         </div>
 
-        <div className="card" style={{ padding: "22px", borderRadius: 20, borderLeft: "4px solid #0284c7" }}>
+        <div className="card" style={{ padding: "22px", borderRadius: 20 }}>
           <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700 }}>LOCKED IN ESCROW</div>
           <div style={{ color: "#0284c7", fontWeight: 900, fontSize: 30, marginTop: 4 }}>$200.00</div>
           <div style={{ color: "var(--text-subtle)", fontSize: 12, marginTop: 2 }}>GlowBrand Vitamin C Reel</div>
         </div>
 
-        <div className="card" style={{ padding: "22px", borderRadius: 20, borderLeft: "4px solid #f59e0b" }}>
+        <div className="card" style={{ padding: "22px", borderRadius: 20 }}>
           <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700 }}>MILESTONE CASH BONUSES</div>
           <div style={{ color: "#f59e0b", fontWeight: 900, fontSize: 30, marginTop: 4 }}>+$350.00</div>
           <div style={{ color: "var(--text-subtle)", fontSize: 12, marginTop: 2 }}>+10% Pro Plan Task Reward</div>
