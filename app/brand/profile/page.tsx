@@ -1,3 +1,7 @@
 "use client";
-import ProfileView from "@/components/shared_views/ProfileView";
-export default ProfileView;
+
+import BrandProfileView from "@/components/shared_views/BrandProfileView";
+
+export default function BrandProfilePage() {
+  return <BrandProfileView />;
+}
