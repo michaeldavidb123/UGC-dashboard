@@ -143,7 +143,6 @@ export default function BrandProfileView() {
         {[
           { id: "info", label: "Brand Overview & Guidelines" },
           { id: "campaigns", label: "Active Briefs (6)" },
-          { id: "talent", label: "Saved Talent (3)" },
           { id: "billing", label: "Escrow & Billing" },
           { id: "team", label: "Team Members (3)" },
           { id: "settings", label: "Settings & Security" },
@@ -243,26 +242,7 @@ export default function BrandProfileView() {
         </div>
       )}
 
-      {/* ── TAB 3: SAVED TALENT ── */}
-      {activeTab === "talent" && (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
-          {savedCreators.map(cr => (
-            <div key={cr.id} className="card card-lift" style={{ padding: 20, borderRadius: 18, textAlign: "center" }}>
-              <div style={{ width: 52, height: 52, borderRadius: 999, background: "#7c3aed", color: "#fff", fontWeight: 900, fontSize: 18, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
-                {cr.avatar}
-              </div>
-              <h4 style={{ color: "var(--text)", fontWeight: 800, fontSize: 15, margin: "0 0 2px" }}>{cr.name}</h4>
-              <div style={{ color: "var(--text-subtle)", fontSize: 12, marginBottom: 8 }}>{cr.handle}</div>
-              <span className="pill pill-purple" style={{ fontSize: 10, marginBottom: 12, display: "inline-flex" }}>{cr.niche}</span>
-              <div style={{ display: "flex", justifyContent: "space-around", fontSize: 12, borderTop: "1px solid var(--border)", paddingTop: 10, marginTop: 10 }}>
-                <span><strong style={{ color: "#f59e0b" }}>{cr.rating}</strong></span>
-                <span style={{ color: "var(--text-subtle)" }}>{cr.deals} Deals</span>
-              </div>
-              <button className="btn btn-primary" style={{ width: "100%", marginTop: 14, fontSize: 12, borderRadius: 10 }}>Invite to Campaign</button>
-            </div>
-          ))}
-        </div>
-      )}
+
 
       {/* ── TAB 4: ESCROW & BILLING ── */}
       {activeTab === "billing" && (
