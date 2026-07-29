@@ -51,9 +51,9 @@ function Section({
   id, title, subtitle, children
 }: { id: string; title: string; subtitle?: string; children: React.ReactNode }) {
   return (
-    <div id={id} style={{ marginBottom: 24 }}>
-      <div className="card" style={{ padding: "28px 32px", borderRadius: 18 }}>
-        <div style={{ marginBottom: 24 }}>
+    <div id={id} style={{ marginBottom: 20 }}>
+      <div className="card" style={{ padding: "clamp(16px, 4vw, 28px)", borderRadius: 18, maxWidth: "100%", boxSizing: "border-box" }}>
+        <div style={{ marginBottom: 20 }}>
           <div style={{ color: "var(--text)", fontWeight: 800, fontSize: 17, letterSpacing: "-0.01em" }}>{title}</div>
           {subtitle && <div style={{ color: "var(--text-subtle)", fontSize: 13, marginTop: 4 }}>{subtitle}</div>}
         </div>
@@ -202,8 +202,15 @@ export default function ProfileView() {
         .profile-container {
           display: grid;
           grid-template-columns: 220px 1fr;
-          gap: 28px;
+          gap: 24px;
           align-items: start;
+          max-width: 100%;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .profile-main-column {
+          min-width: 0;
+          max-width: 100%;
         }
         .profile-nav-card {
           position: sticky;
@@ -216,13 +223,13 @@ export default function ProfileView() {
         }
         .auto-grid-2 {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          gap: 16px;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+          gap: 14px;
         }
         .auto-grid-3 {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-          gap: 16px;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+          gap: 14px;
         }
         @media (max-width: 768px) {
           .profile-container {
@@ -234,6 +241,7 @@ export default function ProfileView() {
             top: 0;
             margin-bottom: 12px;
             overflow-x: auto;
+            max-width: 100%;
           }
           .profile-nav-list {
             flex-direction: row;
@@ -287,7 +295,7 @@ export default function ProfileView() {
         {/* ══════════════════════════════════════
             MAIN CONTENT
         ══════════════════════════════════════ */}
-        <div>
+        <div className="profile-main-column">
 
           {/* ── PROFILE HEADER ── */}
           <div id="header" style={{ marginBottom: 24, borderRadius: 20, overflow: "hidden", border: "1px solid var(--border-strong)" }}>
@@ -307,7 +315,7 @@ export default function ProfileView() {
             </div>
 
             {/* Avatar + Info */}
-            <div style={{ background: "var(--surface)", padding: "0 32px 28px" }}>
+            <div className="profile-header-padding" style={{ background: "var(--surface)", padding: "0 clamp(16px, 4vw, 32px) clamp(16px, 4vw, 28px)" }}>
               <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
                 {/* Avatar */}
                 <div style={{ display: "flex", alignItems: "flex-end", gap: 20 }}>
