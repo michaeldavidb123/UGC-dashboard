@@ -62,7 +62,7 @@ const adminNav: NavEntry[] = [
   { href: "/admin/content",       icon: FileVideo,       label: "Content Review"      },
   { href: "/admin/payouts",       icon: DollarSign,      label: "Payouts"             },
   { href: "/admin/subscriptions", icon: CreditCard,      label: "Subscriptions"       },
-  { href: "/admin/deposits",      icon: BadgeDollarSign, label: "Deposits"            },
+  { href: "/transactions",        icon: BadgeDollarSign, label: "Transactions"        },
   { href: "/admin/referrals",     icon: Gift,            label: "Referrals"           },
   { href: "/admin/plans",         icon: LayoutList,      label: "Plans"               },
   { href: "/admin/settings",      icon: Settings,        label: "Settings"            },
@@ -76,7 +76,7 @@ const creatorNav: NavEntry[] = [
   { href: "/ambassadors",  icon: HeartHandshake,  label: "Ambassadors"         },
   { href: "/subscription", icon: Crown,           label: "Subscription"        },
   { href: "/earnings",     icon: Wallet,          label: "Earnings"            },
-  { href: "/deposits",     icon: BadgeDollarSign, label: "Deposits"            },
+  { href: "/transactions", icon: BadgeDollarSign, label: "Transactions"        },
   { href: "/referrals",    icon: Gift,            label: "Referrals"           },
   { href: "/profile",      icon: User,            label: "Profile & Showcase"  },
 ];
@@ -88,8 +88,8 @@ const normalNav: NavEntry[] = [
   socialLoungeSubMenu,
   { href: "/ambassadors",  icon: HeartHandshake,  label: "Ambassadors"         },
   { href: "/subscription", icon: Crown,           label: "Plans"               },
-  { href: "/deposit",      icon: CreditCard,      label: "Make Deposit"        },
-  { href: "/deposits",     icon: BadgeDollarSign, label: "Deposits"            },
+  { href: "/deposit",      icon: CreditCard,      label: "Fund Escrow"         },
+  { href: "/transactions", icon: BadgeDollarSign, label: "Transactions"        },
   { href: "/referrals",    icon: Gift,            label: "Referrals"           },
   { href: "/profile",      icon: User,            label: "Profile"             },
 ];

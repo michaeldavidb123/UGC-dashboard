@@ -99,8 +99,8 @@ export default function DepositPage() {
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(2,132,199,0.08)", border: "1px solid rgba(2,132,199,0.2)", borderRadius: 999, padding: "5px 14px", fontSize: 12, fontWeight: 700, color: "#0284c7", marginBottom: 14 }}>
               <Lock style={{ width: 11, height: 11 }} /> Secure Checkout
             </div>
-            <h1 style={{ color: "var(--text)", fontWeight: 900, fontSize: 28, letterSpacing: "-0.03em", marginBottom: 6 }}>Complete Your Payment</h1>
-            <p style={{ color: "var(--text-subtle)", fontSize: 14 }}>All transactions are encrypted with SSL. We never store your full card details.</p>
+            <h1 style={{ color: "var(--text)", fontWeight: 900, fontSize: 28, letterSpacing: "-0.03em", marginBottom: 6 }}>Fund Your Escrow Wallet</h1>
+            <p style={{ color: "var(--text-subtle)", fontSize: 14 }}>Funds are held in secure 256-bit SSL Escrow. Money is only released to creators upon video deliverable approval.</p>
           </div>
 
           {/* Payment Method Tabs */}
