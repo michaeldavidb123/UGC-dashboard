@@ -247,60 +247,7 @@ export default function SubscriptionView() {
           </p>
         </div>
 
-        {/* ── CREATOR REASON-TO-BUY PROFIT CALCULATOR BANNER ── */}
-        {userType === "creator" && (
-          <div className="card" style={{ padding: "24px 28px", borderRadius: 22, background: "linear-gradient(135deg, rgba(2,132,199,0.12) 0%, rgba(16,185,129,0.08) 100%)", border: "1px solid rgba(2,132,199,0.3)", marginBottom: 40 }}>
-            <div className="grid-responsive-2col" style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 24, alignItems: "center" }}>
-              <div>
-                <div style={{ color: "#0284c7", fontWeight: 800, fontSize: 12, letterSpacing: "0.06em", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
-                  <TrendingUp style={{ width: 16, height: 16 }} /> CREATOR PROFIT CALCULATOR
-                </div>
-                <h3 style={{ color: "var(--text)", fontWeight: 900, fontSize: 20, margin: "0 0 8px", letterSpacing: "-0.02em" }}>
-                  Why Upgrading to Pro or Elite Pays for Itself
-                </h3>
-                <p style={{ color: "var(--text-subtle)", fontSize: 13, margin: "0 0 16px", lineHeight: 1.5 }}>
-                  Adjust your estimated monthly brand deal earnings to see your exact net cash increase on Pro vs Free:
-                </p>
-
-                {/* Range Slider */}
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, fontWeight: 700 }}>
-                    <span style={{ color: "var(--text-subtle)" }}>Monthly Brand Deal Earnings:</span>
-                    <span style={{ color: "#10b981", fontSize: 16 }}>${estMonthlyEarnings.toLocaleString()} / mo</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={500}
-                    max={10000}
-                    step={250}
-                    value={estMonthlyEarnings}
-                    onChange={e => setEstMonthlyEarnings(Number(e.target.value))}
-                    style={{ width: "100%", accentColor: "#0284c7", cursor: "pointer" }}
-                  />
-                </div>
-              </div>
-
-              {/* Profit Calculation Highlight Box */}
-              <div style={{ background: "var(--surface)", padding: "20px", borderRadius: 18, border: "1px solid var(--border-strong)", boxShadow: "0 8px 24px rgba(0,0,0,0.1)" }}>
-                <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700 }}>NET EXTRA PROFIT ON PRO PLAN:</div>
-                <div style={{ color: "#10b981", fontWeight: 900, fontSize: 32, letterSpacing: "-0.03em", marginTop: 2 }}>
-                  +${Math.round(proNetExtra).toLocaleString()} <span style={{ fontSize: 14, fontWeight: 600, color: "var(--text-subtle)" }}>/month extra</span>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border)", fontSize: 12 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", color: "var(--text-muted)" }}>
-                    <span>Fee Savings (5% vs 15%):</span>
-                    <strong style={{ color: "#10b981" }}>+${Math.round(freeFee - (estMonthlyEarnings * 0.05)).toLocaleString()}</strong>
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", color: "var(--text-muted)" }}>
-                    <span>+10% Task Milestone Cash Bonus:</span>
-                    <strong style={{ color: "#10b981" }}>+${Math.round(proBonus).toLocaleString()}</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+       
 
         {/* BILLING TOGGLE (Monthly vs Yearly) */}
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 36 }}>
