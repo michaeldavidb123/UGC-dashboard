@@ -72,13 +72,6 @@ const CREATOR_PLANS = [
 
 export default function CreatorSubscriptionView() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
-  const [estEarnings, setEstEarnings] = useState(2500);
-
-  // Profit calculation
-  const freeFee = estEarnings * 0.15;
-  const proFee = estEarnings * 0.05;
-  const proBonus = estEarnings * 0.10;
-  const proNetExtra = (freeFee - proFee) + proBonus - (billingCycle === "yearly" ? 24 : 29);
 
   return (
     <DashLayout title="Creator Plans">
@@ -90,74 +83,12 @@ export default function CreatorSubscriptionView() {
           gap: 24px;
           align-items: stretch;
         }
-        .calc-grid {
-          display: grid;
-          grid-template-columns: 1.2fr 1fr;
-          gap: 24px;
-          align-items: center;
-        }
-        @media (max-width: 768px) {
-          .calc-grid {
-            grid-template-columns: 1fr;
-          }
-        }
       `}</style>
 
       <PageHeader
         title="Creator Membership & Earnings Plans"
         subtitle="Upgrade your plan to cut platform fees to 0%, unlock 10%-20% milestone cash bonuses, and get priority brand invites."
       />
-
-      {/* ── PROFIT CALCULATOR BANNER ── */}
-      <div className="card" style={{ padding: "clamp(20px, 4vw, 28px)", borderRadius: 24, background: "linear-gradient(135deg, rgba(2,132,199,0.12) 0%, rgba(16,185,129,0.08) 100%)", border: "1px solid rgba(2,132,199,0.3)", marginBottom: 32 }}>
-        <div className="calc-grid">
-          <div>
-            <div style={{ color: "#0284c7", fontWeight: 800, fontSize: 12, letterSpacing: "0.06em", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
-              <TrendingUp style={{ width: 16, height: 16 }} /> CREATOR PROFIT CALCULATOR
-            </div>
-            <h3 style={{ color: "var(--text)", fontWeight: 900, fontSize: "clamp(18px, 4vw, 22px)", margin: "0 0 8px", letterSpacing: "-0.02em" }}>
-              Why Upgrading to Pro or Elite Pays for Itself
-            </h3>
-            <p style={{ color: "var(--text-subtle)", fontSize: 13, margin: "0 0 16px", lineHeight: 1.5 }}>
-              Adjust your estimated monthly brand deal earnings to see how much extra cash you pocket on Pro vs Free:
-            </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, fontWeight: 700 }}>
-                <span style={{ color: "var(--text-subtle)" }}>Monthly Brand Deal Earnings:</span>
-                <span style={{ color: "#10b981", fontSize: 16, fontWeight: 900 }}>${estEarnings.toLocaleString()} / mo</span>
-              </div>
-              <input
-                type="range"
-                min={500}
-                max={10000}
-                step={250}
-                value={estEarnings}
-                onChange={e => setEstEarnings(Number(e.target.value))}
-                style={{ width: "100%", accentColor: "#0284c7", cursor: "pointer" }}
-              />
-            </div>
-          </div>
-
-          <div style={{ background: "var(--surface)", padding: "20px", borderRadius: 18, border: "1px solid var(--border-strong)" }}>
-            <div style={{ color: "var(--text-subtle)", fontSize: 11, fontWeight: 700 }}>ESTIMATED EXTRA NET PROFIT ON PRO:</div>
-            <div style={{ color: "#10b981", fontWeight: 900, fontSize: "clamp(26px, 5vw, 32px)", letterSpacing: "-0.03em", marginTop: 2 }}>
-              +${Math.round(proNetExtra).toLocaleString()} <span style={{ fontSize: 13, fontWeight: 600, color: "var(--text-subtle)" }}>/mo extra</span>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border)", fontSize: 12 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", color: "var(--text-muted)" }}>
-                <span>Fee Savings (5% vs 15%):</span>
-                <strong style={{ color: "#10b981" }}>+${Math.round(freeFee - proFee).toLocaleString()}</strong>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", color: "var(--text-muted)" }}>
-                <span>+10% Task Milestone Cash Bonus:</span>
-                <strong style={{ color: "#10b981" }}>+${Math.round(proBonus).toLocaleString()}</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* ── BILLING CYCLE TOGGLE ── */}
       <div style={{ display: "flex", justifyContent: "center", marginBottom: 32 }}>
